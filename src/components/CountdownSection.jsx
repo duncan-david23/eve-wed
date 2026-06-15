@@ -64,14 +64,22 @@ const CountdownSection = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 overflow-hidden">
+    <div className="relative min-h-screen bg-white overflow-hidden">
       {/* Background Decor */}
-      <div className="absolute inset-0 opacity-5">
+      <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(circle at 2px 2px, #000 1px, transparent 1px)',
           backgroundSize: '40px 40px',
         }} />
       </div>
+
+      {/* Light Ray Effect */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.05 }}
+        transition={{ duration: 1.5 }}
+        className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-amber-200 rounded-full blur-[120px]"
+      />
 
       <motion.div
         variants={containerVariants}
@@ -83,17 +91,17 @@ const CountdownSection = () => {
         {/* Section Title */}
         <motion.div variants={itemVariants} className="text-center mb-8 md:mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <Heart className="w-4 h-4 text-red-500/60 fill-red-500/60" />
-            <Clock className="w-4 h-4 text-white/40" />
-            <Heart className="w-4 h-4 text-red-500/60 fill-red-500/60" />
+            <Heart className="w-4 h-4 text-rose-400 fill-rose-400" />
+            <Clock className="w-4 h-4 text-gray-400" />
+            <Heart className="w-4 h-4 text-rose-400 fill-rose-400" />
           </div>
-          <h2 className="text-white/60 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] sm:tracking-[0.4em] mb-2 font-light">
+          <h2 className="text-gray-500 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] sm:tracking-[0.4em] mb-2 font-light">
             COUNTDOWN
           </h2>
-          <p className="text-white/80 text-lg sm:text-xl md:text-2xl lg:text-3xl font-light tracking-wide">
+          <p className="text-gray-700 text-lg sm:text-xl md:text-2xl lg:text-3xl font-light tracking-wide">
             to our forever begins
           </p>
-          <div className="w-12 h-px bg-gradient-to-r from-transparent via-red-500/40 to-transparent mx-auto mt-4" />
+          <div className="w-12 h-px bg-gradient-to-r from-transparent via-rose-400 to-transparent mx-auto mt-4" />
         </motion.div>
 
         {/* Main Content Container */}
@@ -102,13 +110,13 @@ const CountdownSection = () => {
           className="relative w-full max-w-[340px] sm:max-w-[500px] md:max-w-[700px] lg:max-w-[900px] mx-auto"
         >
           {/* White Card Background */}
-          <div className="bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 p-4 sm:p-6 md:p-8">
+          <div className="bg-white shadow-2xl rounded-3xl border border-gray-100 p-4 sm:p-6 md:p-8">
             
             {/* Image Section - Overlapping Design */}
             <div className="relative -mt-12 sm:-mt-16 md:-mt-20 mb-6 sm:mb-8 md:mb-10">
               {/* Decorative Frame */}
-              <div className="absolute inset-[-3px] bg-gradient-to-r from-white/20 via-red-500/20 to-white/20 rounded-2xl sm:rounded-3xl" />
-              <div className="absolute inset-[-1px] bg-black rounded-2xl sm:rounded-3xl" />
+              <div className="absolute inset-[-3px] bg-gradient-to-r from-amber-200 via-rose-200 to-amber-200 rounded-2xl sm:rounded-3xl" />
+              <div className="absolute inset-[-1px] bg-white rounded-2xl sm:rounded-3xl" />
               
               {/* Image */}
               <motion.img
@@ -117,12 +125,12 @@ const CountdownSection = () => {
                 transition={{ duration: 0.8 }}
                 src={Img2}
                 alt="Couple Image"
-                className="relative w-full rounded-2xl sm:rounded-3xl shadow-2xl grayscale-[20%]"
+                className="relative w-full rounded-2xl sm:rounded-3xl shadow-xl"
               />
               
               {/* Decorative Overlay Text */}
               <div className="absolute bottom-3 left-0 right-0 text-center">
-                <p className="text-white/40 text-[8px] sm:text-[10px] tracking-[0.2em] font-light">
+                <p className="text-gray-400 text-[8px] sm:text-[10px] tracking-[0.2em] font-light">
                     FOREVER BEGINS
                 </p>
               </div>
@@ -137,18 +145,18 @@ const CountdownSection = () => {
                   variants={numberVariants}
                   initial="hidden"
                   animate="visible"
-                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-white mb-1 sm:mb-2"
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-800 mb-1 sm:mb-2"
                 >
                   {String(timeLeft.days).padStart(3, '0')}
                 </motion.div>
-                <div className="text-white/30 text-[10px] sm:text-xs tracking-wider uppercase">
+                <div className="text-gray-400 text-[10px] sm:text-xs tracking-wider uppercase">
                   DAYS
                 </div>
               </div>
 
               {/* Colon Separator */}
               <div className="flex items-center justify-center">
-                <div className="text-white/20 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">:</div>
+                <div className="text-gray-300 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">:</div>
               </div>
 
               {/* Hours */}
@@ -158,18 +166,18 @@ const CountdownSection = () => {
                   variants={numberVariants}
                   initial="hidden"
                   animate="visible"
-                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-white mb-1 sm:mb-2"
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-800 mb-1 sm:mb-2"
                 >
                   {String(timeLeft.hours).padStart(2, '0')}
                 </motion.div>
-                <div className="text-white/30 text-[10px] sm:text-xs tracking-wider uppercase">
+                <div className="text-gray-400 text-[10px] sm:text-xs tracking-wider uppercase">
                   HOURS
                 </div>
               </div>
 
               {/* Colon Separator */}
               <div className="flex items-center justify-center">
-                <div className="text-white/20 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">:</div>
+                <div className="text-gray-300 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">:</div>
               </div>
 
               {/* Minutes */}
@@ -179,18 +187,18 @@ const CountdownSection = () => {
                   variants={numberVariants}
                   initial="hidden"
                   animate="visible"
-                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-white mb-1 sm:mb-2"
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-800 mb-1 sm:mb-2"
                 >
                   {String(timeLeft.minutes).padStart(2, '0')}
                 </motion.div>
-                <div className="text-white/30 text-[10px] sm:text-xs tracking-wider uppercase">
+                <div className="text-gray-400 text-[10px] sm:text-xs tracking-wider uppercase">
                   MINS
                 </div>
               </div>
 
               {/* Colon Separator */}
               <div className="flex items-center justify-center">
-                <div className="text-white/20 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">:</div>
+                <div className="text-gray-300 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">:</div>
               </div>
 
               {/* Seconds */}
@@ -200,11 +208,11 @@ const CountdownSection = () => {
                   variants={numberVariants}
                   initial="hidden"
                   animate="visible"
-                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-white mb-1 sm:mb-2"
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-800 mb-1 sm:mb-2"
                 >
                   {String(timeLeft.seconds).padStart(2, '0')}
                 </motion.div>
-                <div className="text-white/30 text-[10px] sm:text-xs tracking-wider uppercase">
+                <div className="text-gray-400 text-[10px] sm:text-xs tracking-wider uppercase">
                   SECS
                 </div>
               </div>
@@ -213,12 +221,12 @@ const CountdownSection = () => {
             {/* Wedding Date Reminder */}
             <motion.div
               variants={itemVariants}
-              className="text-center pt-4 sm:pt-6 border-t border-white/10"
+              className="text-center pt-4 sm:pt-6 border-t border-gray-100"
             >
-              <div className="flex items-center justify-center gap-2 text-white/40 text-xs sm:text-sm">
+              <div className="flex items-center justify-center gap-2 text-gray-500 text-xs sm:text-sm">
                 <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
                 <span>NOVEMBER 26, 2026</span>
-                <Heart className="w-3 h-3 sm:w-4 sm:h-4 text-red-500/40 fill-red-500/40" />
+                <Heart className="w-3 h-3 sm:w-4 sm:h-4 text-rose-400 fill-rose-400" />
                 <span>3:00 PM</span>
               </div>
             </motion.div>
@@ -230,9 +238,9 @@ const CountdownSection = () => {
             className="flex justify-center mt-6 sm:mt-8"
           >
             <div className="flex items-center gap-2">
-              <div className="w-8 h-px bg-white/20" />
-              <ChevronRight className="w-3 h-3 text-white/20" />
-              <div className="w-8 h-px bg-white/20" />
+              <div className="w-8 h-px bg-gray-300" />
+              <ChevronRight className="w-3 h-3 text-gray-400" />
+              <div className="w-8 h-px bg-gray-300" />
             </div>
           </motion.div>
         </motion.div>

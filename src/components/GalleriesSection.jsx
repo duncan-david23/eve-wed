@@ -105,14 +105,17 @@ const GalleriesSection = () => {
   };
 
   return (
-    <div className="relative bg-black">
-      {/* Simplified Background Decor */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
+    <div className="relative bg-white">
+      {/* Background Decor */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
         <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(circle at 1px 1px, #000 1px, transparent 1px)',
           backgroundSize: '30px 30px',
         }} />
       </div>
+
+      {/* Light Ray Effect */}
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-amber-200 rounded-full blur-[120px] opacity-20" />
 
       <div className="relative py-12 sm:py-16 md:py-20 px-4">
         {/* Section Header with fade-in animation */}
@@ -121,20 +124,20 @@ const GalleriesSection = () => {
           style={{ animationDelay: '0.1s' }}
         >
           <div className="flex items-center justify-center gap-3 mb-4">
-            <Camera className="w-4 h-4 text-white/30" />
-            <div className="w-8 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-            <Sparkles className="w-4 h-4 text-white/30" />
-            <div className="w-8 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-            <Camera className="w-4 h-4 text-white/30" />
+            <Camera className="w-4 h-4 text-gray-400" />
+            <div className="w-8 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
+            <Sparkles className="w-4 h-4 text-gray-400" />
+            <div className="w-8 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
+            <Camera className="w-4 h-4 text-gray-400" />
           </div>
-          <h2 className="text-white/50 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] mb-2 font-light">
+          <h2 className="text-gray-500 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] mb-2 font-light">
             PRECIOUS MOMENTS
           </h2>
-          <p className="text-white/80 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-wide">
+          <p className="text-gray-800 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-wide">
             Our Gallery
           </p>
-          <div className="w-12 h-px bg-gradient-to-r from-transparent via-red-500/30 to-transparent mx-auto mt-4" />
-          <p className="text-white/25 text-xs sm:text-sm mt-4 max-w-2xl mx-auto">
+          <div className="w-12 h-px bg-gradient-to-r from-transparent via-rose-400 to-transparent mx-auto mt-4" />
+          <p className="text-gray-400 text-xs sm:text-sm mt-4 max-w-2xl mx-auto">
             Capturing the beautiful moments of our special day
           </p>
         </div>
@@ -146,7 +149,7 @@ const GalleriesSection = () => {
               <div
                 key={image.id}
                 data-id={image.id}
-                className={`gallery-item relative group cursor-pointer overflow-hidden rounded-xl bg-white/5 border border-white/10 transition-all duration-300 hover:scale-[1.02] hover:border-red-500/20 ${getSizeClass(image.size)} ${
+                className={`gallery-item relative group cursor-pointer overflow-hidden rounded-xl bg-gray-50 border border-gray-200 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${getSizeClass(image.size)} ${
                   visibleItems.includes(image.id) ? 'animate-slideUp' : 'opacity-0'
                 }`}
                 style={{ animationDelay: `${index * 0.05}s` }}
@@ -161,7 +164,7 @@ const GalleriesSection = () => {
                   />
                   
                   {/* Overlay on Hover */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-rose-500/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <ZoomIn className="w-8 h-8 text-white animate-pulse-once" />
                   </div>
                 </div>
@@ -172,8 +175,8 @@ const GalleriesSection = () => {
 
         {/* View More Button with hover animation */}
         <div className="flex justify-center mt-10 md:mt-14">
-          <button className="group px-8 py-3 bg-white/5 border border-white/10 rounded-full hover:border-red-500/40 transition-all duration-300 hover:scale-105">
-            <span className="text-white/50 text-sm tracking-wide group-hover:text-white/80 transition-colors duration-300">
+          <button className="group px-8 py-3 bg-white border border-gray-300 rounded-full hover:border-rose-400 hover:shadow-lg transition-all duration-300 hover:scale-105">
+            <span className="text-gray-600 text-sm tracking-wide group-hover:text-rose-500 transition-colors duration-300">
               View Full Gallery
             </span>
           </button>
@@ -228,9 +231,9 @@ const GalleriesSection = () => {
         {/* Decorative Bottom */}
         <div className="flex justify-center mt-10 md:mt-14">
           <div className="flex items-center gap-2">
-            <div className="w-12 h-px bg-white/10" />
-            <ImageIcon className="w-3 h-3 text-white/20" />
-            <div className="w-12 h-px bg-white/10" />
+            <div className="w-12 h-px bg-gray-300" />
+            <ImageIcon className="w-3 h-3 text-gray-400" />
+            <div className="w-12 h-px bg-gray-300" />
           </div>
         </div>
       </div>
