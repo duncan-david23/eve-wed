@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Heart, 
   X, 
@@ -6,54 +7,29 @@ import {
   ChevronRight, 
   Camera, 
   Sparkles,
-  ZoomIn,
-  Image as ImageIcon
+  ZoomIn 
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const GalleriesSection = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [visibleItems, setVisibleItems] = useState([]);
-  const sectionRef = useRef(null);
   const navigate = useNavigate();
 
-  // Gallery Images - Just ID and URL with different sizes for shapes
   const galleryImages = [
-    { id: 1, url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=1200&fit=crop", size: "large" },
-    { id: 2, url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&h=800&fit=crop", size: "square" },
-    { id: 3, url: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&h=1000&fit=crop", size: "portrait" },
-    { id: 4, url: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&h=600&fit=crop", size: "wide" },
-    { id: 5, url: "https://images.unsplash.com/photo-1511795409674-a3212fa0ad27?w=800&h=1000&fit=crop", size: "portrait" },
-    { id: 6, url: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&h=800&fit=crop", size: "square" },
-    { id: 7, url: "https://images.unsplash.com/photo-1475499112825-d6f2f3c2bd89?w=800&h=1200&fit=crop", size: "tall" },
-    { id: 8, url: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&h=600&fit=crop", size: "wide" },
-    { id: 9, url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=1000&fit=crop", size: "portrait" },
-    { id: 10, url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&h=1200&fit=crop", size: "tall" },
-    { id: 11, url: "https://images.unsplash.com/photo-1511795409674-a3212fa0ad27?w=800&h=800&fit=crop", size: "square" },
-    { id: 12, url: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&h=1000&fit=crop", size: "portrait" }
+    { id: 1, url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=1200&fit=crop" },
+    { id: 2, url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&h=800&fit=crop" },
+    { id: 3, url: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&h=1000&fit=crop" },
+    { id: 4, url: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&h=600&fit=crop" },
+    { id: 5, url: "https://images.unsplash.com/photo-1511795409674-a3212fa0ad27?w=800&h=1000&fit=crop" },
+    { id: 6, url: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&h=800&fit=crop" },
+    { id: 7, url: "https://images.unsplash.com/photo-1475499112825-d6f2f3c2bd89?w=800&h=1200&fit=crop" },
+    { id: 8, url: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&h=600&fit=crop" },
+    { id: 9, url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=1000&fit=crop" },
+    { id: 10, url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&h=1200&fit=crop" },
+    { id: 11, url: "https://images.unsplash.com/photo-1511795409674-a3212fa0ad27?w=800&h=800&fit=crop" },
+    { id: 12, url: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&h=1000&fit=crop" }
   ];
-
-  // Intersection Observer for scroll animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = parseInt(entry.target.getAttribute('data-id'));
-            setVisibleItems(prev => [...prev, id]);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    );
-
-    const items = document.querySelectorAll('.gallery-item');
-    items.forEach(item => observer.observe(item));
-
-    return () => observer.disconnect();
-  }, []);
 
   const openLightbox = useCallback((image, index) => {
     setSelectedImage(image);
@@ -72,240 +48,161 @@ const GalleriesSection = () => {
       : (currentIndex - 1 + galleryImages.length) % galleryImages.length;
     setCurrentIndex(newIndex);
     setSelectedImage(galleryImages[newIndex]);
-  }, [currentIndex, galleryImages]);
+  }, [currentIndex]);
 
-  // Get size classes for desktop (different shapes)
-  const getSizeClass = (size) => {
-    switch(size) {
-      case 'large':
-        return 'md:col-span-2 md:row-span-2';
-      case 'wide':
-        return 'md:col-span-2';
-      case 'tall':
-        return 'md:row-span-2';
-      default:
-        return '';
-    }
-  };
+  // Keyboard navigation
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!selectedImage) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') navigateImage('next');
+      if (e.key === 'ArrowLeft') navigateImage('prev');
+    };
 
-  // Get different heights for mobile (2 columns with different shapes)
-  const getMobileHeight = (size) => {
-    switch(size) {
-      case 'large':
-        return 'h-64';
-      case 'wide':
-        return 'h-48';
-      case 'tall':
-        return 'h-72';
-      case 'portrait':
-        return 'h-56';
-      case 'square':
-        return 'h-48';
-      default:
-        return 'h-48';
-    }
-  };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedImage, navigateImage, closeLightbox]);
 
   return (
-    <div className="relative bg-white">
-      {/* Background Decor */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
+    <div className="relative min-h-screen bg-gradient-to-br from-zinc-50 via-white to-zinc-100 overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none">
         <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, #000 1px, transparent 1px)',
-          backgroundSize: '30px 30px',
+          backgroundImage: 'radial-gradient(circle at 2px 2px, #111827 0.8px, transparent 1px)',
+          backgroundSize: '44px 44px',
         }} />
       </div>
 
-      {/* Light Ray Effect */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-amber-200 rounded-full blur-[120px] opacity-20" />
-
-      <div className="relative py-12 sm:py-16 md:py-20 px-4">
-        {/* Section Header with fade-in animation */}
-        <div 
-          className="text-center mb-10 md:mb-14 animate-fadeIn"
-          style={{ animationDelay: '0.1s' }}
+      <div className="relative py-20 sm:py-24 md:py-28 px-6">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12 md:mb-16"
         >
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Camera className="w-4 h-4 text-gray-400" />
-            <div className="w-8 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
-            <Sparkles className="w-4 h-4 text-gray-400" />
-            <div className="w-8 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
-            <Camera className="w-4 h-4 text-gray-400" />
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="h-px w-12 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <Camera className="w-6 h-6 text-teal-500" />
+            <Heart className="w-6 h-6 text-rose-500 fill-rose-500" />
+            <Camera className="w-6 h-6 text-teal-500" />
+            <div className="h-px w-12 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
           </div>
-          <h2 className="text-gray-500 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] mb-2 font-light">
-            PRECIOUS MOMENTS
-          </h2>
-          <p className="text-gray-800 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-wide">
+          
+          <h2 className="text-teal-600 text-sm font-light tracking-[4px] uppercase mb-3">CAPTURED MOMENTS</h2>
+          <p className="text-4xl sm:text-5xl md:text-6xl font-light text-zinc-800 tracking-tight">
             Our Gallery
           </p>
-          <div className="w-12 h-px bg-gradient-to-r from-transparent via-rose-400 to-transparent mx-auto mt-4" />
-          <p className="text-gray-400 text-xs sm:text-sm mt-4 max-w-2xl mx-auto">
-            Capturing the beautiful moments of our special day
+          <p className="text-zinc-500 mt-4 max-w-md mx-auto">
+            Timeless memories from our love story
           </p>
-        </div>
+        </motion.div>
 
-        {/* Gallery Grid - 2 columns on mobile with different shapes */}
-        <div className="max-w-[340px] sm:max-w-[600px] md:max-w-[900px] lg:max-w-[1200px] mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 auto-rows-min">
+        {/* Masonry Gallery Grid */}
+        <div className="max-w-7xl mx-auto">
+          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
             {galleryImages.map((image, index) => (
-              <div
+              <motion.div
                 key={image.id}
-                data-id={image.id}
-                className={`gallery-item relative group cursor-pointer overflow-hidden rounded-xl bg-gray-50 border border-gray-200 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${getSizeClass(image.size)} ${
-                  visibleItems.includes(image.id) ? 'animate-slideUp' : 'opacity-0'
-                }`}
-                style={{ animationDelay: `${index * 0.05}s` }}
+                initial={{ opacity: 0, y: 60 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: Math.min(index * 0.04, 0.6) }}
+                whileHover={{ scale: 1.02 }}
+                className="relative group cursor-pointer break-inside-avoid mb-4 overflow-hidden rounded-3xl shadow-lg"
                 onClick={() => openLightbox(image, index)}
               >
-                <div className={`relative w-full ${getMobileHeight(image.size)} overflow-hidden`}>
+                <div className="relative overflow-hidden">
                   <img
                     src={image.url}
-                    alt={`Gallery ${image.id}`}
+                    alt={`Wedding moment ${image.id}`}
                     loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   
-                  {/* Overlay on Hover */}
-                  <div className="absolute inset-0 bg-rose-500/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <ZoomIn className="w-8 h-8 text-white animate-pulse-once" />
+                  {/* Elegant Hover Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end justify-center pb-8">
+                    <div className="flex flex-col items-center">
+                      <ZoomIn className="w-9 h-9 text-white mb-3 drop-shadow" />
+                      <p className="text-white/90 text-sm tracking-widest font-light">View Moment</p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
 
-        {/* View More Button with hover animation */}
-        <div className="flex justify-center mt-10 md:mt-14">
-          <button onClick={() => navigate('/gallery')} className="group px-8 py-3 bg-white border border-gray-300 rounded-full hover:border-rose-400 hover:shadow-lg transition-all duration-300 hover:scale-105">
-            <span className="text-gray-600 text-sm tracking-wide group-hover:text-rose-500 transition-colors duration-300">
-              View Full Gallery
-            </span>
-          </button>
-        </div>
-
-        {/* Lightbox Modal */}
-        {selectedImage && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 animate-fadeIn"
-            onClick={closeLightbox}
+        {/* View Full Gallery Button */}
+        <div className="flex justify-center mt-16">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate('/gallery')}
+            className="group flex items-center gap-3 px-10 py-4 bg-white border border-zinc-200 hover:border-teal-300 rounded-2xl text-zinc-700 hover:text-teal-700 transition-all shadow-sm hover:shadow-xl"
           >
-            <button
+            <Sparkles className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+            <span className="font-light tracking-wider">EXPLORE FULL GALLERY</span>
+          </motion.button>
+        </div>
+      </div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {selectedImage && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95" onClick={closeLightbox}>
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               onClick={closeLightbox}
-              className="absolute top-4 right-4 z-10 p-2 bg-white/10 rounded-full hover:bg-white/20 transition-all duration-200 hover:scale-110"
+              className="absolute top-6 right-6 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all backdrop-blur"
             >
-              <X className="w-5 h-5 text-white" />
-            </button>
+              <X className="w-6 h-6 text-white" />
+            </motion.button>
 
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                navigateImage('prev');
-              }}
-              className="absolute left-4 z-10 p-2 bg-white/10 rounded-full hover:bg-white/20 transition-all duration-200 hover:scale-110"
+            <motion.button
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              onClick={(e) => { e.stopPropagation(); navigateImage('prev'); }}
+              className="absolute left-6 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all backdrop-blur hidden md:block"
             >
-              <ChevronLeft className="w-5 h-5 text-white" />
-            </button>
+              <ChevronLeft className="w-6 h-6 text-white" />
+            </motion.button>
 
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                navigateImage('next');
-              }}
-              className="absolute right-4 z-10 p-2 bg-white/10 rounded-full hover:bg-white/20 transition-all duration-200 hover:scale-110"
+            <motion.button
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              onClick={(e) => { e.stopPropagation(); navigateImage('next'); }}
+              className="absolute right-6 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all backdrop-blur hidden md:block"
             >
-              <ChevronRight className="w-5 h-5 text-white" />
-            </button>
+              <ChevronRight className="w-6 h-6 text-white" />
+            </motion.button>
 
-            <div
-              className="relative max-w-[90vw] max-h-[90vh] animate-scaleIn"
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.92 }}
+              transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+              className="relative max-w-[92vw] max-h-[92vh] flex items-center justify-center p-4"
               onClick={(e) => e.stopPropagation()}
             >
               <img
                 src={selectedImage.url}
-                alt={`Gallery ${selectedImage.id}`}
-                className="max-w-full max-h-[90vh] object-contain rounded-lg"
+                alt="Wedding moment"
+                className="max-w-full max-h-[88vh] object-contain rounded-2xl shadow-2xl"
               />
+            </motion.div>
+
+            {/* Image Counter */}
+            <div className="absolute bottom-8 text-white/70 text-sm font-light tracking-widest">
+              {currentIndex + 1} / {galleryImages.length}
             </div>
           </div>
         )}
-
-        {/* Decorative Bottom */}
-        <div className="flex justify-center mt-10 md:mt-14">
-          <div className="flex items-center gap-2">
-            <div className="w-12 h-px bg-gray-300" />
-            <ImageIcon className="w-3 h-3 text-gray-400" />
-            <div className="w-12 h-px bg-gray-300" />
-          </div>
-        </div>
-      </div>
-
-      {/* CSS Animations */}
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes scaleIn {
-          from {
-            opacity: 0;
-            transform: scale(0.9);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        @keyframes pulseOnce {
-          0% {
-            transform: scale(0.8);
-            opacity: 0;
-          }
-          50% {
-            transform: scale(1.2);
-            opacity: 1;
-          }
-          100% {
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
-
-        .animate-fadeIn {
-          animation: fadeIn 0.6s ease-out forwards;
-        }
-
-        .animate-slideUp {
-          animation: slideUp 0.5s ease-out forwards;
-        }
-
-        .animate-scaleIn {
-          animation: scaleIn 0.3s ease-out forwards;
-        }
-
-        .animate-pulse-once {
-          animation: pulseOnce 0.4s ease-out;
-        }
-      `}</style>
+      </AnimatePresence>
     </div>
   );
 };

@@ -20,30 +20,10 @@ const LoveStorySection = () => {
     title: "The Bride",
     emoji: "👰",
     story: [
-      {
-        year: "2020",
-        icon: Coffee,
-        text: "It all started with a coffee date that changed everything. I was immediately drawn to his warmth, his laughter, and the way his eyes lit up when he talked about his dreams.",
-        color: "text-teal-500"
-      },
-      {
-        year: "2021",
-        icon: Sun,
-        text: "Through the ups and downs of life, we grew together. Every sunrise reminded me that I had found my sunshine in him. Our love deepened with each passing day.",
-        color: "text-amber-400"
-      },
-      {
-        year: "2022",
-        icon: Heart,
-        text: "He asked me to be his forever under the stars. In that magical moment, I knew I had found my home. My heart said yes before I could even speak the words.",
-        color: "text-red-500"
-      },
-      {
-        year: "2023",
-        icon: Star,
-        text: "Planning our future together has been the greatest adventure. From choosing colors to dreaming about our forever, every step has been filled with love and excitement.",
-        color: "text-teal-500"
-      }
+      { year: "2020", icon: Coffee, text: "It all started with a coffee date that changed everything. I was immediately drawn to his warmth, his laughter, and the way his eyes lit up when he talked about his dreams.", color: "text-teal-500" },
+      { year: "2021", icon: Sun, text: "Through the ups and downs of life, we grew together. Every sunrise reminded me that I had found my sunshine in him. Our love deepened with each passing day.", color: "text-amber-400" },
+      { year: "2022", icon: Heart, text: "He asked me to be his forever under the stars. In that magical moment, I knew I had found my home. My heart said yes before I could even speak the words.", color: "text-rose-500" },
+      { year: "2023", icon: Star, text: "Planning our future together has been the greatest adventure. From choosing colors to dreaming about our forever, every step has been filled with love and excitement.", color: "text-teal-500" }
     ],
     quote: "From the moment I met him, I knew he was the one my soul had been searching for."
   };
@@ -53,119 +33,81 @@ const LoveStorySection = () => {
     title: "The Groom",
     emoji: "🤵",
     story: [
-      {
-        year: "2020",
-        icon: Coffee,
-        text: "That first coffee date was unforgettable. I saw something special in her - a spark, a warmth, a beauty that went far beyond what my eyes could see.",
-        color: "text-teal-500"
-      },
-      {
-        year: "2021",
-        icon: Moon,
-        text: "She became my peace, my anchor. Through every storm, her love was the calm I needed. I knew I had found someone truly extraordinary.",
-        color: "text-amber-400"
-      },
-      {
-        year: "2022",
-        icon: Gift,
-        text: "Getting down on one knee was the easiest decision I've ever made. Seeing her eyes fill with tears of joy, I knew I had just made the best promise of my life.",
-        color: "text-red-500"
-      },
-      {
-        year: "2023",
-        icon: Camera,
-        text: "Every moment with her is a memory I want to capture forever. From wedding planning to building our dreams, I can't wait to start our forever together.",
-        color: "text-teal-500"
-      }
+      { year: "2020", icon: Coffee, text: "That first coffee date was unforgettable. I saw something special in her - a spark, a warmth, a beauty that went far beyond what my eyes could see.", color: "text-teal-500" },
+      { year: "2021", icon: Moon, text: "She became my peace, my anchor. Through every storm, her love was the calm I needed. I knew I had found someone truly extraordinary.", color: "text-amber-400" },
+      { year: "2022", icon: Gift, text: "Getting down on one knee was the easiest decision I've ever made. Seeing her eyes fill with tears of joy, I knew I had just made the best promise of my life.", color: "text-rose-500" },
+      { year: "2023", icon: Camera, text: "Every moment with her is a memory I want to capture forever. From wedding planning to building our dreams, I can't wait to start our forever together.", color: "text-teal-500" }
     ],
     quote: "She is my greatest blessing, my best friend, and the love of my life. Forever with her is not long enough."
   };
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.4 },
-    },
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] } },
   };
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
+  const timelineItemVariants = {
+    hidden: { opacity: 0, x: -30 },
+    visible: (i) => ({
       opacity: 1,
-      y: 0,
-      transition: { duration: 0.4 },
-    },
-    exit: {
-      opacity: 0,
-      y: -20,
-      transition: { duration: 0.3 },
-    },
+      x: 0,
+      transition: { delay: i * 0.15, duration: 0.6, ease: "easeOut" }
+    }),
   };
 
-  // Render story card component
-  const renderStoryCard = (story, type) => {
+  const renderStoryCard = (storyData, type) => {
     const isBride = type === 'bride';
-    const name = isBride ? brideStory.name : groomStory.name;
-    const title = isBride ? brideStory.title : groomStory.title;
-    const emoji = isBride ? brideStory.emoji : groomStory.emoji;
-    const quote = isBride ? brideStory.quote : groomStory.quote;
-    const storyData = isBride ? brideStory.story : groomStory.story;
+    const { name, title, emoji, quote, story } = isBride ? brideStory : groomStory;
 
     return (
       <motion.div
         key={type}
-        variants={cardVariants}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        className="bg-white rounded-2xl border border-teal-100 shadow-md overflow-hidden"
+        variants={itemVariants}
+        className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white overflow-hidden"
       >
-        {/* Header - Simplified */}
-        <div className="bg-gradient-to-r from-teal-50 via-amber-50 to-red-50 p-6 sm:p-8 border-b border-teal-100">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-3xl shadow-sm">
+        {/* Header */}
+        <div className="bg-gradient-to-br from-teal-50 via-amber-50 to-rose-50 p-8 md:p-10">
+          <div className="flex flex-col sm:flex-row items-center gap-6">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white shadow-md flex items-center justify-center text-5xl flex-shrink-0">
               {emoji}
             </div>
-            <div>
-              <h3 className="text-gray-800 text-2xl font-light">{name}</h3>
-              <p className="text-teal-500 text-sm font-light">{title}</p>
+            <div className="text-center sm:text-left">
+              <h3 className="text-3xl sm:text-4xl font-light text-zinc-800">{name}</h3>
+              <p className="text-teal-600 text-lg font-light">{title}</p>
             </div>
           </div>
-          <div className="mt-4 p-4 bg-white rounded-xl border border-teal-100">
-            <p className="text-gray-600 text-sm italic font-light">"{quote}"</p>
+
+          <div className="mt-8 p-6 bg-white/70 backdrop-blur rounded-2xl border border-white/80 italic text-zinc-600 leading-relaxed">
+            “{quote}”
           </div>
         </div>
 
-        {/* Timeline - Simplified */}
-        <div className="p-6 sm:p-8">
-          <div className="space-y-6">
-            {storyData.map((item, index) => (
-              <div
+        {/* Timeline */}
+        <div className="p-8 md:p-10">
+          <div className="space-y-10 relative before:absolute before:left-6 before:top-3 before:bottom-3 before:w-px before:bg-gradient-to-b before:from-teal-200 before:via-amber-200 before:to-transparent">
+            {story.map((item, index) => (
+              <motion.div
                 key={index}
-                className="relative pl-8 border-l-2 border-teal-200 last:border-l-0"
+                custom={index}
+                variants={timelineItemVariants}
+                initial="hidden"
+                animate="visible"
+                className="relative pl-16"
               >
-                <div className="absolute -left-3 top-0 w-6 h-6 rounded-full bg-white border-2 border-teal-200 flex items-center justify-center">
-                  <item.icon className={`w-3 h-3 ${item.color}`} />
+                <div className="absolute left-0 w-12 h-12 rounded-2xl bg-white shadow flex items-center justify-center border border-teal-100">
+                  <item.icon className={`w-6 h-6 ${item.color}`} />
                 </div>
-                <div className="mb-1">
-                  <span className="text-amber-400 text-sm font-light">{item.year}</span>
-                </div>
-                <p className="text-gray-600 text-sm md:text-base font-light leading-relaxed">
+                
+                <div className="text-amber-400 text-sm tracking-widest font-light mb-2">{item.year}</div>
+                <p className="text-zinc-600 leading-relaxed text-[15px] md:text-base">
                   {item.text}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -174,99 +116,82 @@ const LoveStorySection = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-white overflow-hidden">
-      {/* Dots Background - Kept */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
+    <div className="relative min-h-screen bg-gradient-to-br from-zinc-50 via-white to-zinc-100 overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none">
         <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, #000 1px, transparent 1px)',
-          backgroundSize: '30px 30px',
+          backgroundImage: 'radial-gradient(circle at 2px 2px, #111827 0.8px, transparent 1px)',
+          backgroundSize: '44px 44px',
         }} />
       </div>
 
-      {/* Removed heavy decorative blur elements */}
-
-      <div className="relative py-16 sm:py-20 md:py-24 px-4">
-        {/* Section Header */}
+      <div className="relative py-20 sm:py-24 md:py-28 px-6">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
           viewport={{ once: true }}
           className="text-center mb-12 md:mb-16"
         >
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-8 h-px bg-amber-400" />
-            <Heart className="w-5 h-5 text-red-500 fill-red-500" />
-            <div className="w-8 h-px bg-amber-400" />
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="h-px w-12 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <Heart className="w-6 h-6 text-rose-500 fill-rose-500" />
+            <div className="h-px w-12 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
           </div>
-          <h2 className="text-gray-500 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] mb-2 font-light">
-            OUR LOVE STORY
-          </h2>
-          <p className="text-gray-800 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-wide">
-            How We Found
+          
+          <h2 className="text-teal-600 text-sm font-light tracking-[4px] uppercase mb-3">OUR JOURNEY</h2>
+          <p className="text-4xl sm:text-5xl md:text-6xl font-light text-zinc-800 tracking-tight">
+            How We Found Each Other
           </p>
-          <p className="text-gray-800 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-wide -mt-2">
-            Each Other
-          </p>
-          <div className="w-12 h-px bg-amber-400 mx-auto mt-4" />
-          <p className="text-gray-400 text-xs sm:text-sm mt-4 max-w-2xl mx-auto">
-            A journey of love, laughter, and happily ever after
+          <p className="text-zinc-500 mt-4 max-w-md mx-auto text-sm sm:text-base">
+            A beautiful story of love, growth, and destiny
           </p>
         </motion.div>
 
-        {/* Toggle Buttons - Simplified */}
+        {/* Toggle Tabs */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex justify-center mb-10"
+          className="flex justify-center mb-12"
         >
-          <div className="inline-flex rounded-full border border-gray-200 p-1 bg-white shadow-sm">
-            <button
-              onClick={() => setActiveStory('both')}
-              className={`px-4 sm:px-6 py-2 rounded-full text-sm transition-all duration-200 ${
-                activeStory === 'both' 
-                  ? 'bg-teal-500 text-white' 
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              <Heart className="w-4 h-4 inline mr-2 fill-current" />
-              Both
-            </button>
-            <button
-              onClick={() => setActiveStory('bride')}
-              className={`px-4 sm:px-6 py-2 rounded-full text-sm transition-all duration-200 ${
-                activeStory === 'bride' 
-                  ? 'bg-teal-500 text-white' 
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              <User className="w-4 h-4 inline mr-2" />
-              Bride's Story
-            </button>
-            <button
-              onClick={() => setActiveStory('groom')}
-              className={`px-4 sm:px-6 py-2 rounded-full text-sm transition-all duration-200 ${
-                activeStory === 'groom' 
-                  ? 'bg-teal-500 text-white' 
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              <User className="w-4 h-4 inline mr-2" />
-              Groom's Story
-            </button>
+          <div className="inline-flex bg-white rounded-3xl p-1.5 shadow-lg border border-zinc-100">
+            {[
+              { label: "Both", value: "both", icon: Heart },
+              { label: "Bride", value: "bride", icon: User },
+              { label: "Groom", value: "groom", icon: User }
+            ].map((tab) => (
+              <button
+                key={tab.value}
+                onClick={() => setActiveStory(tab.value)}
+                className={`px-6 py-3 rounded-3xl text-sm font-light transition-all flex items-center gap-2
+                  ${activeStory === tab.value 
+                    ? 'bg-teal-600 text-white shadow' 
+                    : 'text-zinc-500 hover:text-zinc-700'
+                  }`}
+              >
+                <tab.icon className="w-4 h-4" />
+                {tab.label}
+              </button>
+            ))}
           </div>
         </motion.div>
 
-        {/* Stories Grid */}
-        <div className="max-w-[340px] sm:max-w-[600px] md:max-w-[900px] lg:max-w-[1100px] mx-auto">
-          <div className={`grid gap-8 md:gap-10 ${
-            activeStory === 'both' 
-              ? 'grid-cols-1 lg:grid-cols-2' 
-              : 'grid-cols-1 max-w-3xl mx-auto'
-          }`}>
-            <AnimatePresence mode="wait">
+        {/* Stories Container */}
+        <div className="max-w-5xl mx-auto">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeStory}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit={{ opacity: 0 }}
+              className={`grid gap-8 md:gap-12 ${
+                activeStory === 'both' 
+                  ? 'lg:grid-cols-2' 
+                  : 'max-w-2xl mx-auto'
+              }`}
+            >
               {activeStory === 'both' ? (
                 <>
                   {renderStoryCard(brideStory, 'bride')}
@@ -277,22 +202,21 @@ const LoveStorySection = () => {
               ) : (
                 renderStoryCard(groomStory, 'groom')
               )}
-            </AnimatePresence>
-          </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        {/* Bottom Decoration */}
+        {/* Bottom Accent */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="flex justify-center mt-12 md:mt-16"
+          className="flex justify-center mt-16"
         >
-          <div className="flex items-center gap-2">
-            <div className="w-12 h-px bg-amber-400" />
-            <Sparkles className="w-3 h-3 text-amber-400" />
-            <div className="w-12 h-px bg-amber-400" />
+          <div className="flex items-center gap-4 text-amber-400/60">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-amber-400" />
+            <Sparkles className="w-5 h-5" />
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-amber-400" />
           </div>
         </motion.div>
       </div>

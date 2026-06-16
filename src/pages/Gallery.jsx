@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Heart, 
@@ -8,20 +8,17 @@ import {
   Camera, 
   Sparkles,
   ZoomIn,
-  Image as ImageIcon,
+  Download,
   Grid,
-  List,
-  Download
+  List
 } from 'lucide-react';
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [visibleItems, setVisibleItems] = useState([]);
   const [viewMode, setViewMode] = useState('grid');
   const [isDownloading, setIsDownloading] = useState(false);
 
-  // Gallery Images - Replace with your actual images
   const galleryImages = [
     { id: 1, url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=1200&fit=crop", size: "large", title: "The Vows" },
     { id: 2, url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&h=800&fit=crop", size: "square", title: "First Look" },
@@ -39,27 +36,6 @@ const Gallery = () => {
     { id: 14, url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&h=600&fit=crop", size: "wide", title: "Venue" },
     { id: 15, url: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&h=1200&fit=crop", size: "tall", title: "The Dress" },
   ];
-
-  // Intersection Observer for scroll animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = parseInt(entry.target.getAttribute('data-id'));
-            setVisibleItems(prev => [...prev, id]);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    );
-
-    const items = document.querySelectorAll('.gallery-item');
-    items.forEach(item => observer.observe(item));
-
-    return () => observer.disconnect();
-  }, []);
 
   const openLightbox = useCallback((image, index) => {
     setSelectedImage(image);
@@ -80,191 +56,256 @@ const Gallery = () => {
     setSelectedImage(galleryImages[newIndex]);
   }, [currentIndex, galleryImages]);
 
-  // Download image function
   const downloadImage = useCallback(async (image, e) => {
     e.stopPropagation();
     setIsDownloading(true);
-    
     try {
       const response = await fetch(image.url);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `${image.title || 'wedding-photo'}-${image.id}.jpg`;
+      link.download = `${image.title || 'wedding'}-${image.id}.jpg`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('Error downloading image:', error);
-      alert('Failed to download image. Please try again.');
+      alert('Failed to download image');
     } finally {
       setIsDownloading(false);
     }
   }, []);
 
-  // Get size classes for desktop (different shapes)
-  const getSizeClass = (size) => {
-    switch(size) {
-      case 'large':
-        return 'md:col-span-2 md:row-span-2';
-      case 'wide':
-        return 'md:col-span-2';
-      case 'tall':
-        return 'md:row-span-2';
-      default:
-        return '';
-    }
+  // Beautiful drop-in animation variants
+  const itemVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 120, 
+      scale: 0.85,
+      rotate: -5,
+      filter: "blur(4px)",
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      rotate: 0,
+      filter: "blur(0px)",
+      transition: {
+        type: "spring",
+        stiffness: 180,
+        damping: 22,
+        mass: 0.8,
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -60,
+      scale: 0.9,
+      rotate: 3,
+      filter: "blur(4px)",
+      transition: {
+        duration: 0.4,
+        ease: "easeInOut",
+      },
+    },
   };
 
-  // Get different heights for mobile (2 columns with different shapes)
-  const getMobileHeight = (size) => {
-    switch(size) {
-      case 'large':
-        return 'h-64';
-      case 'wide':
-        return 'h-48';
-      case 'tall':
-        return 'h-72';
-      case 'portrait':
-        return 'h-56';
-      case 'square':
-        return 'h-48';
-      default:
-        return 'h-48';
-    }
-  };
-
+  // Stagger children container
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.06,
+        delayChildren: 0.1,
       },
     },
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+  // Lightbox animation
+  const lightboxVariants = {
+    hidden: { 
+      opacity: 0, 
+      scale: 0.88,
+      y: 40,
+    },
     visible: {
       opacity: 1,
+      scale: 1,
       y: 0,
-      transition: { duration: 0.5 },
+      transition: {
+        type: "spring",
+        stiffness: 250,
+        damping: 25,
+        mass: 0.6,
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.88,
+      y: 30,
+      transition: {
+        duration: 0.25,
+        ease: "easeInOut",
+      },
     },
   };
 
+  // Floating hearts in header
+  const floatingHeart = {
+    initial: { y: 0, scale: 1 },
+    animate: {
+      y: [-6, 6, -6],
+      scale: [1, 1.05, 1],
+      transition: {
+        duration: 2.5,
+        repeat: Infinity,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  const getSizeClass = (size) => {
+    switch(size) {
+      case 'large': return 'md:col-span-2 md:row-span-2';
+      case 'wide': return 'md:col-span-2';
+      case 'tall': return 'md:row-span-2';
+      default: return '';
+    }
+  };
+
+  const getMobileHeight = (size) => {
+    switch(size) {
+      case 'large': return 'h-72 sm:h-80';
+      case 'wide': return 'h-56 sm:h-64';
+      case 'tall': return 'h-80 sm:h-96';
+      case 'portrait': return 'h-64 sm:h-72';
+      default: return 'h-56 sm:h-64';
+    }
+  };
+
   return (
-    <div className="relative min-h-screen bg-white overflow-hidden">
-      {/* Dots Background */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
+    <div className="relative min-h-screen bg-gradient-to-br from-zinc-50 via-white to-zinc-100 overflow-hidden">
+      {/* Background Dots */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none">
         <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, #000 1px, transparent 1px)',
-          backgroundSize: '30px 30px',
+          backgroundImage: 'radial-gradient(circle at 2px 2px, #111827 0.8px, transparent 1px)',
+          backgroundSize: '44px 44px',
         }} />
       </div>
 
-      <div className="relative py-12 sm:py-16 md:py-20 px-4">
-        {/* Section Header */}
+      <div className="relative py-16 sm:py-20 md:py-24 px-4 sm:px-6">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-10 md:mb-14"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12 md:mb-16"
         >
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Camera className="w-4 h-4 text-gray-400" />
-            <div className="w-8 h-px bg-gray-300" />
-            <Sparkles className="w-4 h-4 text-gray-400" />
-            <div className="w-8 h-px bg-gray-300" />
-            <Camera className="w-4 h-4 text-gray-400" />
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <motion.div variants={floatingHeart} initial="initial" animate="animate">
+              <Camera className="w-6 h-6 text-teal-500" />
+            </motion.div>
+            <motion.div variants={floatingHeart} initial="initial" animate="animate" transition={{ delay: 0.3 }}>
+              <Heart className="w-6 h-6 text-rose-500 fill-rose-500" />
+            </motion.div>
+            <motion.div variants={floatingHeart} initial="initial" animate="animate" transition={{ delay: 0.6 }}>
+              <Camera className="w-6 h-6 text-teal-500" />
+            </motion.div>
           </div>
-          <h2 className="text-gray-500 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] mb-2 font-light">
-            PRECIOUS MOMENTS
-          </h2>
-          <p className="text-gray-800 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-wide">
+          <h2 className="text-teal-600 text-sm font-light tracking-[4px] uppercase mb-3">PRECIOUS MOMENTS</h2>
+          <p className="text-4xl sm:text-5xl md:text-6xl font-light text-zinc-800 tracking-tight">
             Our Gallery
           </p>
-          <div className="w-12 h-px bg-amber-400 mx-auto mt-4" />
-          <p className="text-gray-400 text-xs sm:text-sm mt-4 max-w-2xl mx-auto">
-            Capturing the beautiful moments of our special day
-          </p>
+          <div className="w-16 h-px bg-gradient-to-r from-transparent via-teal-400 to-transparent mx-auto mt-5" />
         </motion.div>
 
-        {/* View Mode Toggle */}
+        {/* View Toggle */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="flex justify-center mb-8"
+          initial={{ opacity: 0, y: -10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex justify-center mb-10"
         >
-          <div className="inline-flex rounded-full border border-gray-200 p-1 bg-white shadow-sm">
+          <div className="inline-flex bg-white rounded-3xl p-1.5 shadow-sm border border-zinc-200">
             <button
               onClick={() => setViewMode('grid')}
-              className={`px-4 py-2 rounded-full text-sm transition-all duration-300 ${
+              className={`px-5 py-2.5 rounded-3xl text-sm flex items-center gap-2 transition-all duration-300 ${
                 viewMode === 'grid' 
-                  ? 'bg-teal-500 text-white' 
-                  : 'text-gray-500 hover:text-gray-700'
+                  ? 'bg-teal-600 text-white shadow-md shadow-teal-500/30' 
+                  : 'text-zinc-500 hover:text-zinc-700 hover:bg-zinc-50'
               }`}
             >
-              <Grid className="w-4 h-4 inline mr-2" />
-              Grid
+              <Grid className="w-4 h-4" /> Grid
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`px-4 py-2 rounded-full text-sm transition-all duration-300 ${
+              className={`px-5 py-2.5 rounded-3xl text-sm flex items-center gap-2 transition-all duration-300 ${
                 viewMode === 'list' 
-                  ? 'bg-teal-500 text-white' 
-                  : 'text-gray-500 hover:text-gray-700'
+                  ? 'bg-teal-600 text-white shadow-md shadow-teal-500/30' 
+                  : 'text-zinc-500 hover:text-zinc-700 hover:bg-zinc-50'
               }`}
             >
-              <List className="w-4 h-4 inline mr-2" />
-              List
+              <List className="w-4 h-4" /> List
             </button>
           </div>
         </motion.div>
 
-        {/* Gallery Grid */}
-        <div className="max-w-[340px] sm:max-w-[600px] md:max-w-[900px] lg:max-w-[1200px] mx-auto">
+        {/* Gallery Grid - Drop-in animations */}
+        <div className="max-w-7xl mx-auto">
           <motion.div 
             variants={containerVariants}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.1 }}
             className={`grid ${
               viewMode === 'grid' 
-                ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 auto-rows-min'
-                : 'grid-cols-1 gap-4'
+                ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 auto-rows-min' 
+                : 'grid-cols-1 gap-6'
             }`}
           >
             {galleryImages.map((image, index) => (
               <motion.div
                 key={image.id}
                 variants={itemVariants}
-                data-id={image.id}
-                className={`gallery-item relative group cursor-pointer overflow-hidden rounded-xl bg-gray-50 border border-gray-200 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${
+                whileHover={{ 
+                  scale: 1.03, 
+                  y: -4,
+                  transition: { duration: 0.2 }
+                }}
+                whileTap={{ scale: 0.97 }}
+                className={`relative group cursor-pointer overflow-hidden rounded-2xl shadow-lg bg-white border border-white/50 ${
                   viewMode === 'grid' ? getSizeClass(image.size) : ''
                 }`}
                 onClick={() => openLightbox(image, index)}
               >
-                <div className={`relative w-full ${
-                  viewMode === 'grid' 
-                    ? getMobileHeight(image.size) 
-                    : 'h-64 sm:h-80'
-                } overflow-hidden`}>
+                <div className={`relative overflow-hidden ${
+                  viewMode === 'grid' ? getMobileHeight(image.size) : 'h-72 sm:h-96'
+                }`}>
                   <img
                     src={image.url}
-                    alt={image.title || `Gallery ${image.id}`}
+                    alt={image.title}
                     loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                   />
-                  
-                  {/* Overlay on Hover */}
-                  <div className="absolute inset-0 bg-teal-500/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center">
-                    <ZoomIn className="w-8 h-8 text-white mb-2" />
-                    {image.title && (
-                      <span className="text-white text-sm font-light">{image.title}</span>
-                    )}
+
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-center">
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      whileInView={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: 0.1 }}
+                      className="flex flex-col items-center"
+                    >
+                      <ZoomIn className="w-8 h-8 text-white mb-3 drop-shadow-lg" />
+                      {image.title && (
+                        <p className="text-white text-sm sm:text-base font-light tracking-wide px-4 text-center drop-shadow-lg">
+                          {image.title}
+                        </p>
+                      )}
+                    </motion.div>
                   </div>
                 </div>
               </motion.div>
@@ -272,96 +313,132 @@ const Gallery = () => {
           </motion.div>
         </div>
 
-        {/* Image Counter */}
+        {/* Footer */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="text-center mt-8 text-gray-400 text-sm"
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center mt-14 text-zinc-400 text-sm flex items-center justify-center gap-4"
         >
-          {galleryImages.length} precious memories
+          <motion.div
+            animate={{ 
+              scale: [1, 1.2, 1],
+              rotate: [0, 10, -10, 0],
+            }}
+            transition={{ 
+              duration: 2,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+            }}
+          >
+            <Sparkles className="w-4 h-4" />
+          </motion.div>
+          {galleryImages.length} Timeless Memories
+          <motion.div
+            animate={{ 
+              scale: [1, 1.2, 1],
+              rotate: [0, -10, 10, 0],
+            }}
+            transition={{ 
+              duration: 2,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+            }}
+          >
+            <Sparkles className="w-4 h-4" />
+          </motion.div>
         </motion.div>
-
-        {/* Decorative Bottom */}
-        <div className="flex justify-center mt-10 md:mt-14">
-          <div className="flex items-center gap-2">
-            <div className="w-12 h-px bg-gray-300" />
-            <Heart className="w-3 h-3 text-red-500 fill-red-500" />
-            <div className="w-12 h-px bg-gray-300" />
-          </div>
-        </div>
       </div>
 
-      {/* Lightbox Modal with Download Button */}
+      {/* Lightbox Modal */}
       <AnimatePresence>
         {selectedImage && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95"
+            className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
             onClick={closeLightbox}
           >
             {/* Close Button */}
-            <button
+            <motion.button
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
               onClick={closeLightbox}
-              className="absolute top-4 right-4 z-10 p-2 bg-white/10 rounded-full hover:bg-white/20 transition-all duration-200 hover:scale-110"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all z-20"
             >
               <X className="w-6 h-6 text-white" />
-            </button>
+            </motion.button>
 
             {/* Download Button */}
-            <button
-              onClick={(e) => downloadImage(selectedImage, e)}
+            <motion.button
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ delay: 0.05 }}
+              onClick={(e) => { e.stopPropagation(); downloadImage(selectedImage, e); }}
               disabled={isDownloading}
-              className="absolute top-4 right-20 z-10 p-2 bg-white/10 rounded-full hover:bg-white/20 transition-all duration-200 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
-              title="Download Image"
+              className="absolute top-4 right-20 sm:top-6 sm:right-20 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all z-20 disabled:opacity-50"
             >
               <Download className="w-6 h-6 text-white" />
-            </button>
+            </motion.button>
 
-            {/* Previous Button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                navigateImage('prev');
-              }}
-              className="absolute left-4 z-10 p-2 bg-white/10 rounded-full hover:bg-white/20 transition-all duration-200 hover:scale-110"
+            {/* Navigation Buttons */}
+            <motion.button
+              initial={{ x: -30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -30, opacity: 0 }}
+              onClick={(e) => { e.stopPropagation(); navigateImage('prev'); }}
+              className="absolute left-4 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all z-20 hidden sm:block"
             >
-              <ChevronLeft className="w-6 h-6 text-white" />
-            </button>
+              <ChevronLeft className="w-7 h-7 text-white" />
+            </motion.button>
 
-            {/* Next Button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                navigateImage('next');
-              }}
-              className="absolute right-4 z-10 p-2 bg-white/10 rounded-full hover:bg-white/20 transition-all duration-200 hover:scale-110"
+            <motion.button
+              initial={{ x: 30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: 30, opacity: 0 }}
+              onClick={(e) => { e.stopPropagation(); navigateImage('next'); }}
+              className="absolute right-4 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all z-20 hidden sm:block"
             >
-              <ChevronRight className="w-6 h-6 text-white" />
-            </button>
+              <ChevronRight className="w-7 h-7 text-white" />
+            </motion.button>
 
+            {/* Image */}
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="relative max-w-[90vw] max-h-[90vh]"
+              variants={lightboxVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="relative max-w-[95vw] max-h-[90vh]"
               onClick={(e) => e.stopPropagation()}
             >
-              <img
+              <motion.img
                 src={selectedImage.url}
-                alt={selectedImage.title || `Gallery ${selectedImage.id}`}
-                className="max-w-full max-h-[90vh] object-contain rounded-lg"
+                alt={selectedImage.title}
+                className="max-w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
               />
               {selectedImage.title && (
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 rounded-b-lg">
-                  <p className="text-white text-lg font-light">{selectedImage.title}</p>
-                </div>
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="absolute -bottom-14 left-1/2 -translate-x-1/2 bg-white/95 text-zinc-800 px-8 py-3 rounded-2xl text-center shadow-lg text-lg font-light whitespace-nowrap"
+                >
+                  {selectedImage.title}
+                </motion.div>
               )}
-              <div className="absolute top-4 left-4 text-white/60 text-sm">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                className="absolute top-4 left-4 text-white/50 text-sm font-light bg-black/30 px-4 py-2 rounded-full"
+              >
                 {currentIndex + 1} / {galleryImages.length}
-              </div>
+              </motion.div>
             </motion.div>
           </motion.div>
         )}

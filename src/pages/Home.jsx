@@ -16,8 +16,8 @@ const Home = () => {
       <HeroSection />
       <CountdownSection />
       <LocationSection />
-      <GalleriesSection />
       <LoveStorySection />
+      <GalleriesSection />
       <Timeline/>
       <AttendeesSection />
       <FAQSection />
