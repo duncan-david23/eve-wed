@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, Calendar, Clock, Gift, X, User } from 'lucide-react';
+import { Heart, Calendar, Clock, Gift, X, User, Mail } from 'lucide-react';
 import HeroImage from '../assets/sample_hero_img.png';
 import PaystackPop from '@paystack/inline-js';
 
@@ -9,12 +9,13 @@ const HeroSection = () => {
   const [selectedAmount, setSelectedAmount] = useState(null);
   const [customAmount, setCustomAmount] = useState('');
   const [giverName, setGiverName] = useState('');
+  const [giverEmail, setGiverEmail] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [showStickyButton, setShowStickyButton] = useState(false);
 
   const presetAmounts = [50, 100, 200, 500];
   
-  const paystackPublicKey = 'pk_test_3bdc97b024233bb522a068bfefbbe9292322b0fa';
+  const paystackPublicKey = 'pk_test_977623941fe552b3416bc945370b1b21240f26de';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,7 +48,10 @@ const HeroSection = () => {
   };
 
   const isFormValid = () => {
-    return giverName.trim() !== '' && getFinalAmount() > 0;
+    return giverName.trim() !== '' && 
+           giverEmail.trim() !== '' && 
+           getFinalAmount() > 0 &&
+           /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(giverEmail);
   };
 
   const handlePaystackPayment = () => {
@@ -59,7 +63,7 @@ const HeroSection = () => {
 
     popup.newTransaction({
       key: paystackPublicKey,
-      email: `${giverName.toLowerCase().replace(/\s/g, '')}@wedding.com`,
+      email: giverEmail,
       amount: getFinalAmount() * 100,
       currency: 'GHS',
       metadata: {
@@ -77,6 +81,7 @@ const HeroSection = () => {
         setSelectedAmount(null);
         setCustomAmount('');
         setGiverName('');
+        setGiverEmail('');
         setIsProcessing(false);
         alert(`Thank you ${giverName}! Your generous gift of ₵${getFinalAmount()} has been received. ❤️`);
       },
@@ -128,7 +133,7 @@ const HeroSection = () => {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={handleGiftClick}
-              className="rounded-full bg-white/10 backdrop-blur-md border border-white/20  shadow-2xl hover:bg-white/20 transition-all duration-300 px-8 py-3.5 flex items-center gap-3"
+              className="rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl hover:bg-white/20 transition-all duration-300 px-8 py-3.5 flex items-center gap-3"
             >
               <Gift className="w-5 h-5" />
               <span className="text-sm font-light tracking-wide">Bless the Couple</span>
@@ -141,7 +146,7 @@ const HeroSection = () => {
       {/* Content */}
       <div className="relative min-h-screen flex flex-col md:flex-row">
         
-        {/* Image Section - Full width on mobile, Left on desktop */}
+        {/* Image Section */}
         <div className="relative w-full h-screen md:h-auto md:w-1/2 lg:w-3/5">
           <div className="absolute inset-0">
             <img
@@ -152,7 +157,7 @@ const HeroSection = () => {
             <div className="absolute inset-0 bg-black/40" />
           </div>
 
-          {/* Mobile Content - Overlay on Image */}
+          {/* Mobile Content */}
           <div className="md:hidden absolute inset-0 flex items-center justify-center px-4">
             <motion.div
               variants={containerVariants}
@@ -227,7 +232,7 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Desktop Content - Right Side */}
+        {/* Desktop Content */}
         <div className="hidden md:flex md:w-1/2 lg:w-2/5 items-center justify-center px-8 lg:px-12 bg-[#faf8f6]">
           <motion.div
             variants={containerVariants}
@@ -302,125 +307,136 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Gift Modal */}
+      {/* Gift Modal - Cleaner & Smaller */}
       <AnimatePresence>
         {showGiftModal && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm"
             onClick={() => !isProcessing && setShowGiftModal(false)}
           >
             <motion.div
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="relative max-w-md w-full bg-white rounded-2xl shadow-2xl"
+              className="relative max-w-sm w-full bg-white rounded-2xl shadow-2xl overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Close Button */}
               {!isProcessing && (
                 <button
                   onClick={() => setShowGiftModal(false)}
-                  className="absolute top-4 right-4 p-1 rounded-full text-gray-400 hover:text-gray-600 transition-colors z-10"
+                  className="absolute top-3 right-3 p-1.5 rounded-full text-gray-400 hover:text-gray-600 transition-colors z-10 bg-white/80"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4" />
                 </button>
               )}
 
-              <div className="text-center pt-8 pb-4 px-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-                  <Gift className="w-8 h-8 text-gray-700" />
+              {/* Header */}
+              <div className="text-center pt-6 pb-3 px-5">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-teal-50 mb-3">
+                  <Gift className="w-5 h-5 text-teal-600" />
                 </div>
-                <h3 className="text-gray-800 text-2xl font-light tracking-wide">Bless the Couple</h3>
-                <p className="text-gray-500 text-sm mt-2 font-light">
-                  Your generous gift will help start their new journey together
+                <h3 className="text-gray-800 text-lg font-light tracking-wide">Bless the Couple</h3>
+                <p className="text-gray-400 text-xs mt-1 font-light">
+                  Your generous gift starts their new journey
                 </p>
               </div>
 
-              <div className="px-6 py-3">
-                <p className="text-gray-500 text-xs uppercase tracking-wider mb-3 font-light">Your Name *</p>
-                <div className="relative">
-                  <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <input
-                    type="text"
-                    value={giverName}
-                    onChange={(e) => setGiverName(e.target.value)}
-                    disabled={isProcessing}
-                    placeholder="Enter your full name"
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-11 pr-4 py-3 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors disabled:opacity-50"
-                  />
-                </div>
-              </div>
-
-              <div className="px-6 py-3">
-                <p className="text-gray-500 text-xs uppercase tracking-wider mb-3 font-light">Select Amount (GHS)</p>
-                <div className="grid grid-cols-4 gap-3">
-                  {presetAmounts.map((amount) => (
-                    <button
-                      key={amount}
-                      onClick={() => handleAmountSelect(amount)}
+              <div className="px-5 space-y-3 pb-5">
+                {/* Name */}
+                <div>
+                  <label className="text-gray-500 text-[10px] uppercase tracking-wider font-light block mb-1">Your Name *</label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-3.5 h-3.5" />
+                    <input
+                      type="text"
+                      value={giverName}
+                      onChange={(e) => setGiverName(e.target.value)}
                       disabled={isProcessing}
-                      className={`py-3 rounded-xl border transition-all duration-200 ${
-                        selectedAmount === amount
-                          ? 'bg-gray-800 border-gray-800 text-white'
-                          : 'bg-gray-50 border-gray-200 text-gray-600 hover:border-gray-400'
-                      } disabled:opacity-50`}
-                    >
-                      <span className="text-lg font-light">₵{amount}</span>
-                    </button>
-                  ))}
+                      placeholder="Enter your name"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-9 pr-3 py-2 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-teal-400 transition-colors disabled:opacity-50"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="px-6 py-3">
-                <p className="text-gray-500 text-xs uppercase tracking-wider mb-3 font-light">Custom Amount (GHS)</p>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">₵</span>
-                  <input
-                    type="number"
-                    value={customAmount}
-                    onChange={handleCustomAmountChange}
-                    disabled={isProcessing}
-                    placeholder="Enter amount"
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors disabled:opacity-50"
-                    min="1"
-                    step="1"
-                  />
+                {/* Email */}
+                <div>
+                  <label className="text-gray-500 text-[10px] uppercase tracking-wider font-light block mb-1">Email Address *</label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-3.5 h-3.5" />
+                    <input
+                      type="email"
+                      value={giverEmail}
+                      onChange={(e) => setGiverEmail(e.target.value)}
+                      disabled={isProcessing}
+                      placeholder="you@email.com"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-9 pr-3 py-2 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-teal-400 transition-colors disabled:opacity-50"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="px-6 py-6">
-                {isFormValid() ? (
-                  <button
-                    onClick={handlePaystackPayment}
-                    disabled={isProcessing}
-                    className="w-full rounded-xl bg-gray-800 py-4 text-white font-light tracking-wide hover:bg-gray-900 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  >
-                    {isProcessing ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        <span>Processing...</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>Pay with Paystack</span>
-                        <span className="text-gray-300">₵{getFinalAmount()}</span>
-                      </>
-                    )}
-                  </button>
-                ) : (
-                  <button
-                    disabled
-                    className="w-full rounded-xl bg-gray-200 py-4 text-gray-400 font-light tracking-wide cursor-not-allowed"
-                  >
-                    Enter Name & Amount to Continue
-                  </button>
-                )}
-              </div>
+                {/* Preset Amounts */}
+                <div>
+                  <label className="text-gray-500 text-[10px] uppercase tracking-wider font-light block mb-1.5">Amount (GHS)</label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {presetAmounts.map((amount) => (
+                      <button
+                        key={amount}
+                        onClick={() => handleAmountSelect(amount)}
+                        disabled={isProcessing}
+                        className={`py-1.5 rounded-xl border text-sm transition-all duration-200 ${
+                          selectedAmount === amount
+                            ? 'bg-teal-600 border-teal-600 text-white'
+                            : 'bg-gray-50 border-gray-200 text-gray-600 hover:border-teal-400'
+                        } disabled:opacity-50`}
+                      >
+                        ₵{amount}
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-              <div className="text-center pb-6 px-6">
-                <p className="text-gray-400 text-[10px] tracking-wide">
+                {/* Custom Amount */}
+                <div>
+                  <label className="text-gray-500 text-[10px] uppercase tracking-wider font-light block mb-1">Custom Amount</label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm">₵</span>
+                    <input
+                      type="number"
+                      value={customAmount}
+                      onChange={handleCustomAmountChange}
+                      disabled={isProcessing}
+                      placeholder="Enter amount"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-7 pr-3 py-2 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-teal-400 transition-colors disabled:opacity-50"
+                      min="1"
+                      step="1"
+                    />
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  onClick={handlePaystackPayment}
+                  disabled={isProcessing || !isFormValid()}
+                  className="w-full bg-teal-600 hover:bg-teal-700 text-white py-2.5 rounded-xl text-sm font-medium tracking-wide transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {isProcessing ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span>Processing...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Pay ₵{getFinalAmount() || 0}</span>
+                      <span className="text-xs opacity-70">with Paystack</span>
+                    </>
+                  )}
+                </button>
+
+                <p className="text-gray-400 text-[9px] text-center">
                   Secured by Paystack • Ghana Cedis (GHS)
                 </p>
               </div>
