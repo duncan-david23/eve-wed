@@ -39,7 +39,7 @@ const LocationSection = () => {
   const weddingDetails = {
     date: "SEPTEMBER 4, 2026",
     time: "9:00 AM",
-    dressCode: "Teal & Gold Elegance",
+    dressCode: "Teal, Mauve & Gold Elegance",
     reception: "Immediately Following Ceremony",
     venue: "Pinnacle College",
     address: "Akweteyman, Accra",

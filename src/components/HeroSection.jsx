@@ -153,7 +153,7 @@ const HeroSection = () => {
         {/* Names */}
         <motion.div variants={itemVariants} className="text-center">
           <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-gray-800 tracking-wide">
-            EVELYN
+            SELORM
           </h1>
           
           <motion.div
@@ -165,7 +165,7 @@ const HeroSection = () => {
           </motion.div>
           
           <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-gray-800 tracking-wide">
-            CHRISTIAN
+            EWURAH
           </h1>
         </motion.div>
 
@@ -220,7 +220,7 @@ const HeroSection = () => {
                 transition={{ duration: 3, repeat: Infinity }}
                 className="text-gray-800 text-sm sm:text-base md:text-lg font-serif tracking-wide"
               >
-                Evelyn <Heart className="inline-block w-3 h-3 sm:w-4 sm:h-4 text-red-500 fill-red-500 mx-1" /> Christian
+                Selorm <Heart className="inline-block w-3 h-3 sm:w-4 sm:h-4 text-red-500 fill-red-500 mx-1" /> Ewurah
               </motion.p>
               <div className="flex items-center gap-2 mt-1">
                 <Calendar className="w-3 h-3 text-teal-500" />

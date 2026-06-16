@@ -20,7 +20,7 @@ const FAQSection = () => {
     {
       id: 1,
       question: "What is the dress code?",
-      answer: "We invite you to dress in our wedding colors - Teal Green, Gold, and Red! Feel free to incorporate these colors into your outfit. Formal or semi-formal attire is welcome as we celebrate this special day.",
+      answer: "We invite you to dress in our wedding colors - Teal Green, Gold, and Mauve. Feel free to incorporate these colors into your outfit. Formal or semi-formal attire is welcome as we celebrate this special day.",
       icon: HelpCircle
     },
     {

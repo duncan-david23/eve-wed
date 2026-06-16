@@ -10,14 +10,16 @@ import {
   ZoomIn,
   Image as ImageIcon,
   Grid,
-  List
+  List,
+  Download
 } from 'lucide-react';
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleItems, setVisibleItems] = useState([]);
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+  const [viewMode, setViewMode] = useState('grid');
+  const [isDownloading, setIsDownloading] = useState(false);
 
   // Gallery Images - Replace with your actual images
   const galleryImages = [
@@ -77,6 +79,30 @@ const Gallery = () => {
     setCurrentIndex(newIndex);
     setSelectedImage(galleryImages[newIndex]);
   }, [currentIndex, galleryImages]);
+
+  // Download image function
+  const downloadImage = useCallback(async (image, e) => {
+    e.stopPropagation();
+    setIsDownloading(true);
+    
+    try {
+      const response = await fetch(image.url);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${image.title || 'wedding-photo'}-${image.id}.jpg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading image:', error);
+      alert('Failed to download image. Please try again.');
+    } finally {
+      setIsDownloading(false);
+    }
+  }, []);
 
   // Get size classes for desktop (different shapes)
   const getSizeClass = (size) => {
@@ -266,7 +292,7 @@ const Gallery = () => {
         </div>
       </div>
 
-      {/* Lightbox Modal */}
+      {/* Lightbox Modal with Download Button */}
       <AnimatePresence>
         {selectedImage && (
           <motion.div
@@ -276,6 +302,7 @@ const Gallery = () => {
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/95"
             onClick={closeLightbox}
           >
+            {/* Close Button */}
             <button
               onClick={closeLightbox}
               className="absolute top-4 right-4 z-10 p-2 bg-white/10 rounded-full hover:bg-white/20 transition-all duration-200 hover:scale-110"
@@ -283,6 +310,17 @@ const Gallery = () => {
               <X className="w-6 h-6 text-white" />
             </button>
 
+            {/* Download Button */}
+            <button
+              onClick={(e) => downloadImage(selectedImage, e)}
+              disabled={isDownloading}
+              className="absolute top-4 right-20 z-10 p-2 bg-white/10 rounded-full hover:bg-white/20 transition-all duration-200 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Download Image"
+            >
+              <Download className="w-6 h-6 text-white" />
+            </button>
+
+            {/* Previous Button */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -293,6 +331,7 @@ const Gallery = () => {
               <ChevronLeft className="w-6 h-6 text-white" />
             </button>
 
+            {/* Next Button */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
