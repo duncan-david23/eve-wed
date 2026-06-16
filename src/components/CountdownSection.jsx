@@ -11,8 +11,8 @@ const CountdownSection = () => {
     seconds: 0
   });
 
-  // Set your wedding date here - November 26, 2026 at 3:00 PM
-  const weddingDate = new Date(2026, 10, 26, 15, 0, 0);
+  // Set your wedding date here - September 4, 2026 at 9:00 AM
+  const weddingDate = new Date(2026, 8, 4, 9, 0, 0);
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -25,6 +25,13 @@ const CountdownSection = () => {
           hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
           minutes: Math.floor((difference / 1000 / 60) % 60),
           seconds: Math.floor((difference / 1000) % 60)
+        });
+      } else {
+        setTimeLeft({
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0
         });
       }
     };
@@ -73,12 +80,18 @@ const CountdownSection = () => {
         }} />
       </div>
 
-      {/* Light Ray Effect */}
+      {/* Light Ray Effects - Teal and Gold */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.05 }}
+        animate={{ opacity: 0.06 }}
         transition={{ duration: 1.5 }}
-        className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-amber-200 rounded-full blur-[120px]"
+        className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-teal-200 rounded-full blur-[120px]"
+      />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.04 }}
+        transition={{ duration: 1.5, delay: 0.3 }}
+        className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-amber-200 rounded-full blur-[120px]"
       />
 
       <motion.div
@@ -88,20 +101,20 @@ const CountdownSection = () => {
         viewport={{ once: true, amount: 0.3 }}
         className="relative min-h-screen flex flex-col items-center justify-center px-4 py-16 sm:py-20 md:py-24"
       >
-        {/* Section Title */}
+        {/* Section Title - Wedding Colors */}
         <motion.div variants={itemVariants} className="text-center mb-8 md:mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <Heart className="w-4 h-4 text-rose-400 fill-rose-400" />
-            <Clock className="w-4 h-4 text-gray-400" />
-            <Heart className="w-4 h-4 text-rose-400 fill-rose-400" />
+            <Heart className="w-4 h-4 text-red-500 fill-red-500" />
+            <Clock className="w-4 h-4 text-teal-500" />
+            <Heart className="w-4 h-4 text-red-500 fill-red-500" />
           </div>
-          <h2 className="text-gray-500 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] sm:tracking-[0.4em] mb-2 font-light">
+          <h2 className="text-teal-600 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] sm:tracking-[0.4em] mb-2 font-light">
             COUNTDOWN
           </h2>
           <p className="text-gray-700 text-lg sm:text-xl md:text-2xl lg:text-3xl font-light tracking-wide">
             to our forever begins
           </p>
-          <div className="w-12 h-px bg-gradient-to-r from-transparent via-rose-400 to-transparent mx-auto mt-4" />
+          <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mt-4" />
         </motion.div>
 
         {/* Main Content Container */}
@@ -109,13 +122,13 @@ const CountdownSection = () => {
           variants={itemVariants}
           className="relative w-full max-w-[340px] sm:max-w-[500px] md:max-w-[700px] lg:max-w-[900px] mx-auto"
         >
-          {/* White Card Background */}
-          <div className="bg-white shadow-2xl rounded-3xl border border-gray-100 p-4 sm:p-6 md:p-8">
+          {/* White Card Background with Teal Border */}
+          <div className="bg-white shadow-2xl rounded-3xl border border-teal-100 p-4 sm:p-6 md:p-8">
             
             {/* Image Section - Overlapping Design */}
             <div className="relative -mt-12 sm:-mt-16 md:-mt-20 mb-6 sm:mb-8 md:mb-10">
-              {/* Decorative Frame */}
-              <div className="absolute inset-[-3px] bg-gradient-to-r from-amber-200 via-rose-200 to-amber-200 rounded-2xl sm:rounded-3xl" />
+              {/* Decorative Frame - Wedding Colors */}
+              <div className="absolute inset-[-3px] bg-gradient-to-r from-teal-300 via-amber-300 to-red-300 rounded-2xl sm:rounded-3xl" />
               <div className="absolute inset-[-1px] bg-white rounded-2xl sm:rounded-3xl" />
               
               {/* Image */}
@@ -128,119 +141,119 @@ const CountdownSection = () => {
                 className="relative w-full rounded-2xl sm:rounded-3xl shadow-xl"
               />
               
-              {/* Decorative Overlay Text */}
+              {/* Decorative Overlay Text - Gold accent */}
               <div className="absolute bottom-3 left-0 right-0 text-center">
-                <p className="text-gray-400 text-[8px] sm:text-[10px] tracking-[0.2em] font-light">
+                <p className="text-amber-600/60 text-[8px] sm:text-[10px] tracking-[0.2em] font-light">
                     FOREVER BEGINS
                 </p>
               </div>
             </div>
 
-            {/* Countdown Timer */}
+            {/* Countdown Timer - Teal Numbers */}
             <div className="grid grid-cols-4 gap-2 sm:gap-4 md:gap-6 mb-6 sm:mb-8 md:mb-10">
-              {/* Days */}
+              {/* Days - NO leading zero */}
               <div className="text-center">
                 <motion.div
                   key={timeLeft.days}
                   variants={numberVariants}
                   initial="hidden"
                   animate="visible"
-                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-800 mb-1 sm:mb-2"
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-teal-600 mb-1 sm:mb-2"
                 >
-                  {String(timeLeft.days).padStart(3, '0')}
+                  {timeLeft.days}
                 </motion.div>
-                <div className="text-gray-400 text-[10px] sm:text-xs tracking-wider uppercase">
+                <div className="text-teal-400 text-[10px] sm:text-xs tracking-wider uppercase">
                   DAYS
                 </div>
               </div>
 
-              {/* Colon Separator */}
+              {/* Colon Separator - Gold */}
               <div className="flex items-center justify-center">
-                <div className="text-gray-300 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">:</div>
+                <div className="text-amber-300 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">:</div>
               </div>
 
-              {/* Hours */}
+              {/* Hours - with leading zero */}
               <div className="text-center">
                 <motion.div
                   key={timeLeft.hours}
                   variants={numberVariants}
                   initial="hidden"
                   animate="visible"
-                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-800 mb-1 sm:mb-2"
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-teal-600 mb-1 sm:mb-2"
                 >
                   {String(timeLeft.hours).padStart(2, '0')}
                 </motion.div>
-                <div className="text-gray-400 text-[10px] sm:text-xs tracking-wider uppercase">
+                <div className="text-teal-400 text-[10px] sm:text-xs tracking-wider uppercase">
                   HOURS
                 </div>
               </div>
 
-              {/* Colon Separator */}
+              {/* Colon Separator - Gold */}
               <div className="flex items-center justify-center">
-                <div className="text-gray-300 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">:</div>
+                <div className="text-amber-300 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">:</div>
               </div>
 
-              {/* Minutes */}
+              {/* Minutes - with leading zero */}
               <div className="text-center">
                 <motion.div
                   key={timeLeft.minutes}
                   variants={numberVariants}
                   initial="hidden"
                   animate="visible"
-                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-800 mb-1 sm:mb-2"
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-teal-600 mb-1 sm:mb-2"
                 >
                   {String(timeLeft.minutes).padStart(2, '0')}
                 </motion.div>
-                <div className="text-gray-400 text-[10px] sm:text-xs tracking-wider uppercase">
+                <div className="text-teal-400 text-[10px] sm:text-xs tracking-wider uppercase">
                   MINS
                 </div>
               </div>
 
-              {/* Colon Separator */}
+              {/* Colon Separator - Gold */}
               <div className="flex items-center justify-center">
-                <div className="text-gray-300 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">:</div>
+                <div className="text-amber-300 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">:</div>
               </div>
 
-              {/* Seconds */}
+              {/* Seconds - with leading zero */}
               <div className="text-center">
                 <motion.div
                   key={timeLeft.seconds}
                   variants={numberVariants}
                   initial="hidden"
                   animate="visible"
-                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-800 mb-1 sm:mb-2"
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-teal-600 mb-1 sm:mb-2"
                 >
                   {String(timeLeft.seconds).padStart(2, '0')}
                 </motion.div>
-                <div className="text-gray-400 text-[10px] sm:text-xs tracking-wider uppercase">
+                <div className="text-teal-400 text-[10px] sm:text-xs tracking-wider uppercase">
                   SECS
                 </div>
               </div>
             </div>
 
-            {/* Wedding Date Reminder */}
+            {/* Wedding Date Reminder - Updated to September 4, 2026 */}
             <motion.div
               variants={itemVariants}
-              className="text-center pt-4 sm:pt-6 border-t border-gray-100"
+              className="text-center pt-4 sm:pt-6 border-t border-teal-100"
             >
               <div className="flex items-center justify-center gap-2 text-gray-500 text-xs sm:text-sm">
-                <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
-                <span>NOVEMBER 26, 2026</span>
-                <Heart className="w-3 h-3 sm:w-4 sm:h-4 text-rose-400 fill-rose-400" />
-                <span>3:00 PM</span>
+                <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-teal-500" />
+                <span className="text-gray-600 font-light">SEPTEMBER 4, 2026</span>
+                <Heart className="w-3 h-3 sm:w-4 sm:h-4 text-red-500 fill-red-500" />
+                <span className="text-gray-600 font-light">9:00 AM</span>
               </div>
             </motion.div>
           </div>
 
-          {/* Decorative Bottom Element */}
+          {/* Decorative Bottom Element - Gold accent */}
           <motion.div
             variants={itemVariants}
             className="flex justify-center mt-6 sm:mt-8"
           >
             <div className="flex items-center gap-2">
-              <div className="w-8 h-px bg-gray-300" />
-              <ChevronRight className="w-3 h-3 text-gray-400" />
-              <div className="w-8 h-px bg-gray-300" />
+              <div className="w-8 h-px bg-amber-300" />
+              <ChevronRight className="w-3 h-3 text-amber-400" />
+              <div className="w-8 h-px bg-amber-300" />
             </div>
           </motion.div>
         </motion.div>

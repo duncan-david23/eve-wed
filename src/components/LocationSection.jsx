@@ -38,20 +38,19 @@ const LocationSection = () => {
 
   // Wedding details - Update these with your actual information
   const weddingDetails = {
-    date: "NOVEMBER 26, 2026",
-    time: "3:00 PM",
-    dressCode: "Black Tie Optional",
+    date: "SEPTEMBER 4, 2026",
+    time: "9:00 AM",
+    dressCode: "Teal & Gold Elegance",
     reception: "Immediately Following Ceremony",
-    venue: "The Grand Estate",
-    address: "1234 Wedding Avenue, Beverly Hills, CA 90210",
-    googleMapsUrl: "https://maps.google.com/?q=1234+Wedding+Avenue+Beverly+Hills+CA+90210",
+    venue: "Pinnacle College ",
+    googleMapsUrl: "https://www.google.com/maps/dir//Pinnacle+College,+Akweteyman/@5.6182397,-0.1340423,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0xfdf996faabe9be7:0x47e5bfccde59d735!2m2!1d-0.2362034!2d5.6167762?entry=ttu&g_ep=EgoyMDI2MDYxMC4wIKXMDSoASAFQAw%3D%3D",
     whatsappNumber: "233508925171", // Replace with your actual WhatsApp number (without +)
   };
 
   const detailsList = [
     { icon: Calendar, label: "DATE", value: weddingDetails.date },
     { icon: Clock, label: "TIME", value: weddingDetails.time },
-    { icon: Users, label: "ATTIRE", value: weddingDetails.dressCode },
+    { icon: Users, label: "COLORS", value: weddingDetails.dressCode },
     { icon: Music, label: "RECEPTION", value: weddingDetails.reception },
   ];
 
@@ -76,8 +75,9 @@ const LocationSection = () => {
         }} />
       </div>
 
-      {/* Light Ray Effect */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-amber-200 rounded-full blur-[120px] opacity-20" />
+      {/* Light Ray Effects - Teal and Gold */}
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-teal-200 rounded-full blur-[120px] opacity-20" />
+      <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-amber-200 rounded-full blur-[120px] opacity-15" />
 
       <motion.div
         variants={containerVariants}
@@ -86,20 +86,20 @@ const LocationSection = () => {
         viewport={{ once: true, amount: 0.3 }}
         className="relative min-h-screen flex flex-col items-center justify-center px-4 py-16 sm:py-20 md:py-24"
       >
-        {/* Section Header */}
+        {/* Section Header - Wedding Colors */}
         <motion.div variants={itemVariants} className="text-center mb-12 md:mb-16">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-8 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
-            <Sparkles className="w-4 h-4 text-gray-400" />
-            <div className="w-8 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
+            <div className="w-8 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <Sparkles className="w-4 h-4 text-amber-400" />
+            <div className="w-8 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
           </div>
-          <h2 className="text-gray-500 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] mb-2 font-light">
+          <h2 className="text-teal-500 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] mb-2 font-light">
             THE
           </h2>
           <p className="text-gray-800 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-wide">
             Details
           </p>
-          <div className="w-12 h-px bg-gradient-to-r from-transparent via-rose-400 to-transparent mx-auto mt-4" />
+          <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mt-4" />
         </motion.div>
 
         {/* Main Content Grid */}
@@ -111,10 +111,10 @@ const LocationSection = () => {
             
             {/* Left Side - Details List */}
             <div className="space-y-6 md:space-y-8">
-              <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 md:p-8">
+              <div className="bg-white rounded-2xl border border-teal-100 shadow-lg p-6 md:p-8">
                 <div className="flex items-center gap-2 mb-6 md:mb-8">
-                  <Heart className="w-4 h-4 text-rose-400" />
-                  <span className="text-gray-500 text-xs tracking-wider uppercase">Essential Information</span>
+                  <Heart className="w-4 h-4 text-red-500 fill-red-500" />
+                  <span className="text-teal-600 text-xs tracking-wider uppercase">Essential Information</span>
                 </div>
                 
                 <div className="space-y-5 md:space-y-6">
@@ -126,11 +126,11 @@ const LocationSection = () => {
                       transition={{ delay: index * 0.1 }}
                       className="flex items-start gap-4"
                     >
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center">
-                        <detail.icon className="w-4 h-4 text-rose-400" />
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center">
+                        <detail.icon className="w-4 h-4 text-teal-500" />
                       </div>
                       <div className="flex-1">
-                        <div className="text-gray-400 text-[10px] tracking-wider mb-1">{detail.label}</div>
+                        <div className="text-teal-400 text-[10px] tracking-wider mb-1">{detail.label}</div>
                         <div className="text-gray-700 text-sm sm:text-base md:text-lg font-light">
                           {detail.value}
                         </div>
@@ -141,21 +141,21 @@ const LocationSection = () => {
               </div>
 
               {/* Additional Info */}
-              <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 md:p-8">
-                <h3 className="text-gray-700 text-lg md:text-xl font-light mb-4 tracking-wide">What to Expect</h3>
+              <div className="bg-white rounded-2xl border border-teal-100 shadow-lg p-6 md:p-8">
+                <h3 className="text-teal-600 text-lg md:text-xl font-light mb-4 tracking-wide">What to Expect</h3>
                 <div className="space-y-3">
-                  <div className="flex items-center gap-3 text-gray-500 text-sm">
-                    <Camera className="w-3.5 h-3.5" />
+                  <div className="flex items-center gap-3 text-gray-600 text-sm">
+                    <Camera className="w-3.5 h-3.5 text-teal-400" />
                     <span>Professional photography & videography</span>
                   </div>
-                  <div className="flex items-center gap-3 text-gray-500 text-sm">
-                    <Gift className="w-3.5 h-3.5" />
+                  <div className="flex items-center gap-3 text-gray-600 text-sm">
+                    <Gift className="w-3.5 h-3.5 text-amber-400" />
                     <span>Gift registry available upon request</span>
                   </div>
-                  <div className="flex items-center gap-3 text-gray-500 text-sm">
-                    <Music className="w-3.5 h-3.5" />
+                  {/* <div className="flex items-center gap-3 text-gray-600 text-sm">
+                    <Music className="w-3.5 h-3.5 text-teal-400" />
                     <span>Live band and open bar</span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -164,8 +164,9 @@ const LocationSection = () => {
             <div className="space-y-6">
               {/* Image Card */}
               <div className="relative">
-                {/* Decorative Frame */}
-                <div className="absolute inset-[-1px] border border-gray-200 rounded-2xl shadow-lg" />
+                {/* Decorative Frame - Wedding Colors */}
+                <div className="absolute inset-[-1px] bg-gradient-to-r from-teal-300 via-amber-300 to-red-300 rounded-2xl shadow-lg" />
+                <div className="absolute inset-[-0.5px] bg-white rounded-2xl" />
                 
                 <img
                   src={location_img}
@@ -179,44 +180,44 @@ const LocationSection = () => {
                 
                 {/* Venue Name Overlay */}
                 <div className="absolute bottom-4 left-4 right-4">
-                  <p className="text-white/60 text-[10px] tracking-wider mb-1">VENUE</p>
+                  <p className="text-amber-300/80 text-[10px] tracking-wider mb-1">VENUE</p>
                   <p className="text-white text-lg sm:text-xl font-light">{weddingDetails.venue}</p>
                 </div>
               </div>
 
               {/* Location Details Card */}
-              <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 md:p-8">
+              <div className="bg-white rounded-2xl border border-teal-100 shadow-lg p-6 md:p-8">
                 <div className="flex items-start gap-3 mb-4">
-                  <MapPin className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
+                  <MapPin className="w-5 h-5 text-teal-500 flex-shrink-0 mt-0.5" />
                   <div>
-                    <div className="text-gray-400 text-[10px] tracking-wider mb-1">ADDRESS</div>
+                    <div className="text-teal-400 text-[10px] tracking-wider mb-1">ADDRESS</div>
                     <p className="text-gray-700 text-sm md:text-base font-light leading-relaxed">
                       {weddingDetails.address}
                     </p>
                   </div>
                 </div>
 
-                {/* Two Button Row */}
+                {/* Two Button Row - Wedding Colors */}
                 <div className="flex gap-3 mt-4">
-                  {/* Google Maps Button */}
+                  {/* Google Maps Button - Teal */}
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={openGoogleMaps}
-                    className="flex-1 group relative overflow-hidden rounded-xl bg-gray-100 border border-gray-200 px-4 py-3 text-gray-700 transition-all duration-300 hover:bg-rose-50 hover:border-rose-300 hover:text-rose-600"
+                    className="flex-1 group relative overflow-hidden rounded-xl bg-teal-50 border border-teal-200 px-4 py-3 text-teal-700 transition-all duration-300 hover:bg-teal-100 hover:border-teal-300 hover:text-teal-800"
                   >
                     <div className="relative flex items-center justify-center gap-2">
                       <Navigation className="w-4 h-4" />
-                      <span className="text-sm font-light tracking-wide">Maps</span>
+                      <span className="text-sm font-light tracking-wide">Locate Us</span>
                     </div>
                   </motion.button>
 
-                  {/* WhatsApp Button */}
+                  {/* WhatsApp Button - Gold/Amber */}
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={openWhatsApp}
-                    className="flex-1 group relative overflow-hidden rounded-xl bg-gray-100 border border-gray-200 px-4 py-3 text-gray-700 transition-all duration-300 hover:bg-green-50 hover:border-green-300 hover:text-green-600"
+                    className="flex-1 group relative overflow-hidden rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-amber-700 transition-all duration-300 hover:bg-amber-100 hover:border-amber-300 hover:text-amber-800"
                   >
                     <div className="relative flex items-center justify-center gap-2">
                       <MessageCircle className="w-4 h-4" />
@@ -226,26 +227,26 @@ const LocationSection = () => {
                 </div>
 
                 {/* Additional Location Info */}
-                <div className="mt-5 pt-4 border-t border-gray-100">
-                  <div className="flex items-center justify-between text-gray-400 text-xs">
+                {/* <div className="mt-5 pt-4 border-t border-teal-100">
+                  <div className="flex items-center justify-between text-teal-400 text-xs">
                     <span>Parking available on-site</span>
                     <span>Valet service included</span>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
         </motion.div>
 
-        {/* Decorative Bottom */}
+        {/* Decorative Bottom - Wedding Colors */}
         <motion.div
           variants={itemVariants}
           className="flex justify-center mt-12 md:mt-16"
         >
           <div className="flex items-center gap-2">
-            <div className="w-12 h-px bg-gray-300" />
-            <Heart className="w-3 h-3 text-gray-400" />
-            <div className="w-12 h-px bg-gray-300" />
+            <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <Heart className="w-3 h-3 text-red-500 fill-red-500" />
+            <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
           </div>
         </motion.div>
       </motion.div>

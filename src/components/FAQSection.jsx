@@ -22,13 +22,13 @@ const FAQSection = () => {
     {
       id: 1,
       question: "What is the dress code?",
-      answer: "Black Tie Optional. We'd love to see you dress up for our special day! Tuxedos and evening gowns are welcome, but a dark suit and cocktail dress are also perfectly appropriate.",
+      answer: "We invite you to dress in our wedding colors - Teal Green, Gold, and Mauve! Feel free to incorporate these colors into your outfit. Formal or semi-formal attire is welcome as we celebrate this special day.",
       icon: HelpCircle
     },
     {
       id: 2,
       question: "Can I bring a plus one?",
-      answer: "Due to limited venue capacity, we are only able to accommodate guests formally invited on your wedding invitation. Please check your invitation for the number of seats reserved in your honor.",
+      answer: "Absolutely! We'd love to celebrate with as many loved ones as possible. Please let us know the total number of guests attending when you RSVP so we can make proper arrangements.",
       icon: Heart
     },
     {
@@ -52,19 +52,19 @@ const FAQSection = () => {
     {
       id: 6,
       question: "Are children welcome?",
-      answer: "While we love your little ones, we have decided to keep our ceremony and reception an adults-only event. We appreciate your understanding and hope you can enjoy a night off!",
+      answer: "Yes, children are absolutely welcome! We'd love to have your little ones join the celebration. Please let us know the number of children attending when you RSVP so we can make proper arrangements.",
       icon: Moon
     },
     {
       id: 7,
       question: "Will there be food and drinks?",
-      answer: "Yes! We will be serving a full dinner followed by an open bar with signature cocktails, wine, and beer. Please let us know of any dietary restrictions when you RSVP.",
+      answer: "Yes! We will be serving a delicious dinner followed by an open bar with signature cocktails, wine, and beer. Please let us know of any dietary restrictions when you RSVP.",
       icon: Music
     },
     {
       id: 8,
       question: "Where can I find gift registry information?",
-      answer: "Your presence is the greatest gift, but if you wish to bless us, we have registered at our Gift Registry page. Please click the 'Bless the Couple' button at the top right corner of the page.",
+      answer: "Your presence is the greatest gift, but if you wish to bless us, you can click the 'Bless the Couple' button at the top right corner of the page to make a contribution to our future together.",
       icon: Gift
     }
   ];
@@ -102,11 +102,12 @@ const FAQSection = () => {
         }} />
       </div>
 
-      {/* Light Ray Effect */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-amber-200 rounded-full blur-[120px] opacity-20" />
+      {/* Light Ray Effects - Teal and Gold */}
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-teal-200 rounded-full blur-[120px] opacity-20" />
+      <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-amber-200 rounded-full blur-[120px] opacity-15" />
 
       <div className="relative py-16 sm:py-20 md:py-24 px-4">
-        {/* Section Header */}
+        {/* Section Header - Wedding Colors */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -115,17 +116,17 @@ const FAQSection = () => {
           className="text-center mb-12 md:mb-16"
         >
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-8 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
-            <HelpCircle className="w-5 h-5 text-rose-400" />
-            <div className="w-8 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
+            <div className="w-8 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <HelpCircle className="w-5 h-5 text-teal-500" />
+            <div className="w-8 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
           </div>
-          <h2 className="text-gray-500 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] mb-2 font-light">
+          <h2 className="text-teal-500 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] mb-2 font-light">
             HAVE QUESTIONS?
           </h2>
           <p className="text-gray-800 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-wide">
             Frequently Asked
           </p>
-          <div className="w-12 h-px bg-gradient-to-r from-transparent via-rose-400 to-transparent mx-auto mt-4" />
+          <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mt-4" />
           <p className="text-gray-400 text-xs sm:text-sm mt-4 max-w-2xl mx-auto">
             Everything you need to know about our special day
           </p>
@@ -147,14 +148,14 @@ const FAQSection = () => {
                 className="relative"
               >
                 <div 
-                  className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer"
+                  className="bg-white border border-teal-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer"
                   onClick={() => toggleFAQ(index)}
                 >
-                  {/* Question Header */}
+                  {/* Question Header - Wedding Colors */}
                   <div className="flex items-center justify-between p-4 md:p-6">
                     <div className="flex items-center gap-3 flex-1">
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center">
-                        <faq.icon className="w-4 h-4 text-rose-400" />
+                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center">
+                        <faq.icon className="w-4 h-4 text-teal-500" />
                       </div>
                       <h3 className="text-gray-800 text-sm sm:text-base md:text-lg font-light tracking-wide">
                         {faq.question}
@@ -165,11 +166,11 @@ const FAQSection = () => {
                       transition={{ duration: 0.3 }}
                       className="flex-shrink-0"
                     >
-                      <ChevronDown className="w-5 h-5 text-gray-400" />
+                      <ChevronDown className="w-5 h-5 text-teal-400" />
                     </motion.div>
                   </div>
 
-                  {/* Answer */}
+                  {/* Answer - Wedding Colors */}
                   <AnimatePresence>
                     {openIndex === index && (
                       <motion.div
@@ -179,10 +180,10 @@ const FAQSection = () => {
                         transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                       >
-                        <div className="px-4 pb-4 md:px-6 md:pb-6 pt-0 border-t border-gray-100">
+                        <div className="px-4 pb-4 md:px-6 md:pb-6 pt-0 border-t border-teal-100">
                           <div className="flex items-start gap-3">
-                            <div className="w-2 h-2 rounded-full bg-rose-300 mt-2 flex-shrink-0" />
-                            <p className="text-gray-500 text-sm md:text-base font-light leading-relaxed">
+                            <div className="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0" />
+                            <p className="text-gray-600 text-sm md:text-base font-light leading-relaxed">
                               {faq.answer}
                             </p>
                           </div>
@@ -196,7 +197,7 @@ const FAQSection = () => {
           </div>
         </motion.div>
 
-        {/* Still Have Questions Section */}
+        {/* Still Have Questions Section - Wedding Colors */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -204,9 +205,9 @@ const FAQSection = () => {
           viewport={{ once: true }}
           className="mt-12 md:mt-16 text-center"
         >
-          <div className="bg-gradient-to-r from-rose-50 to-amber-50 rounded-2xl p-6 md:p-8 max-w-[600px] mx-auto border border-rose-100">
+          <div className="bg-gradient-to-r from-teal-50 via-amber-50 to-red-50 rounded-2xl p-6 md:p-8 max-w-[600px] mx-auto border border-teal-100">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white shadow-md mb-4">
-              <Heart className="w-6 h-6 text-rose-400" />
+              <Heart className="w-6 h-6 text-red-500 fill-red-500" />
             </div>
             <h3 className="text-gray-800 text-xl md:text-2xl font-light mb-2 tracking-wide">
               Still Have Questions?
@@ -214,14 +215,14 @@ const FAQSection = () => {
             <p className="text-gray-500 text-sm md:text-base font-light mb-4">
               Can't find what you're looking for? We're here to help!
             </p>
-            <button className="inline-flex items-center gap-2 px-6 py-2.5 bg-white border border-rose-200 rounded-full text-rose-600 hover:bg-rose-50 hover:border-rose-300 transition-all duration-300">
+            <button className="inline-flex items-center gap-2 px-6 py-2.5 bg-white border border-teal-200 rounded-full text-teal-600 hover:bg-teal-50 hover:border-teal-300 transition-all duration-300">
               <HelpCircle className="w-4 h-4" />
               <span className="text-sm font-light tracking-wide">Contact Us</span>
             </button>
           </div>
         </motion.div>
 
-        {/* Decorative Bottom */}
+        {/* Decorative Bottom - Wedding Colors */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -230,9 +231,9 @@ const FAQSection = () => {
           className="flex justify-center mt-12 md:mt-16"
         >
           <div className="flex items-center gap-2">
-            <div className="w-12 h-px bg-gray-300" />
-            <Sparkles className="w-3 h-3 text-gray-400" />
-            <div className="w-12 h-px bg-gray-300" />
+            <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <Sparkles className="w-3 h-3 text-amber-400" />
+            <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
           </div>
         </motion.div>
       </div>
