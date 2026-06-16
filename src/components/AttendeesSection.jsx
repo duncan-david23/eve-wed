@@ -39,7 +39,7 @@ const AttendeesSection = () => {
 
   return (
     <div className="relative bg-white min-h-screen overflow-hidden">
-      {/* Background Decor */}
+      {/* Dots Background - Kept */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
         <div className="absolute inset-0" style={{
           backgroundImage: 'radial-gradient(circle at 1px 1px, #000 1px, transparent 1px)',
@@ -47,12 +47,10 @@ const AttendeesSection = () => {
         }} />
       </div>
 
-      {/* Light Ray Effects - Teal and Gold */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-teal-200 rounded-full blur-[120px] opacity-20" />
-      <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-amber-200 rounded-full blur-[120px] opacity-15" />
+      {/* Removed Light Ray Effects - Performance */}
 
       <div className="relative py-16 sm:py-20 md:py-24 px-4">
-        {/* Section Header - Wedding Colors */}
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -61,9 +59,9 @@ const AttendeesSection = () => {
           className="text-center mb-12 md:mb-16"
         >
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-8 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <div className="w-8 h-px bg-amber-400" />
             <Users className="w-5 h-5 text-teal-500" />
-            <div className="w-8 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <div className="w-8 h-px bg-amber-400" />
           </div>
           <h2 className="text-teal-500 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] mb-2 font-light">
             JOIN THE CELEBRATION
@@ -71,7 +69,7 @@ const AttendeesSection = () => {
           <p className="text-gray-800 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-wide">
             Will You Attend?
           </p>
-          <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mt-4" />
+          <div className="w-12 h-px bg-amber-400 mx-auto mt-4" />
           <p className="text-gray-400 text-xs sm:text-sm mt-4 max-w-2xl mx-auto">
             Please let us know if you can make it to our special day
           </p>
@@ -89,7 +87,7 @@ const AttendeesSection = () => {
             variants={itemVariants}
             className="bg-white border border-teal-100 rounded-2xl shadow-xl overflow-hidden"
           >
-            {/* Illustration Area - Wedding Colors */}
+            {/* Illustration Area */}
             <div className="bg-gradient-to-br from-teal-50 via-amber-50 to-red-50 p-6 sm:p-8 text-center border-b border-teal-100">
               <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white shadow-md mb-4">
                 <Heart className="w-8 h-8 sm:w-10 sm:h-10 text-red-500 fill-red-500" />
@@ -100,17 +98,17 @@ const AttendeesSection = () => {
               </p>
               <div className="flex flex-wrap items-center justify-center gap-2 mt-4 text-teal-500 text-xs">
                 <Calendar className="w-3 h-3" />
-                <span>NOVEMBER 26, 2026</span>
+                <span>SEPTEMBER 4, 2026</span>
                 <MapPin className="w-3 h-3 ml-0 sm:ml-2" />
-                <span>The Grand Estate</span>
+                <span>Pinnacle College</span>
               </div>
             </div>
 
-            {/* RSVP Button - Wedding Colors */}
+            {/* RSVP Button */}
             <div className="p-6 sm:p-8 text-center">
               <button
                 onClick={() => setShowRSVPModal(true)}
-                className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 bg-gradient-to-r from-teal-600 to-teal-700 text-white rounded-full hover:shadow-lg hover:shadow-teal-500/30 transition-all duration-300 hover:scale-105 text-sm sm:text-base"
+                className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 bg-teal-600 text-white rounded-full hover:bg-teal-700 transition-all duration-300 hover:scale-105 text-sm sm:text-base"
               >
                 <UserCheck className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span className="font-medium tracking-wide">RSVP Now</span>
@@ -121,7 +119,7 @@ const AttendeesSection = () => {
             </div>
           </motion.div>
 
-          {/* Additional Info - Wedding Colors */}
+          {/* Additional Info */}
           <motion.div
             variants={itemVariants}
             className="text-center mt-8"
@@ -134,7 +132,7 @@ const AttendeesSection = () => {
           </motion.div>
         </motion.div>
 
-        {/* Decorative Bottom - Wedding Colors */}
+        {/* Decorative Bottom */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -143,17 +141,17 @@ const AttendeesSection = () => {
           className="flex justify-center mt-12 md:mt-16"
         >
           <div className="flex items-center gap-2">
-            <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <div className="w-12 h-px bg-amber-400" />
             <Sparkles className="w-3 h-3 text-amber-400" />
-            <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <div className="w-12 h-px bg-amber-400" />
           </div>
         </motion.div>
       </div>
 
-      {/* RSVP Modal with Embedded Google Form - Wedding Colors */}
+      {/* RSVP Modal */}
       {showRSVPModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm overflow-y-auto py-4 sm:py-8"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-auto py-4 sm:py-8"
           onClick={() => setShowRSVPModal(false)}
         >
           <div
@@ -168,7 +166,7 @@ const AttendeesSection = () => {
               <X className="w-5 h-5" />
             </button>
 
-            {/* Header - Wedding Colors */}
+            {/* Header */}
             <div className="text-center pt-6 pb-2 px-4 border-b border-teal-100">
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-r from-teal-100 via-amber-100 to-red-100 mb-3">
                 <UserCheck className="w-7 h-7 text-teal-600" />
@@ -179,7 +177,7 @@ const AttendeesSection = () => {
               </p>
             </div>
 
-            {/* Loading Indicator - Wedding Colors */}
+            {/* Loading Indicator */}
             {isLoading && (
               <div className="flex items-center justify-center py-20">
                 <Loader2 className="w-8 h-8 text-teal-500 animate-spin" />

@@ -1,22 +1,18 @@
 import React from 'react'
-import HeroSection from './components/HeroSection'
-import CountdownSection from './components/CountdownSection'
-import LocationSection from './components/LocationSection'
-import GalleriesSection from './components/GalleriesSection'
-import FAQSection from './components/FAQSection'
-import AttendeesSection from './components/AttendeesSection'
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import Home from './pages/Home'
+import Gallery from './pages/Gallery'
+
 
 
 const App = () => {
   return (
-    <div className="">
-      <HeroSection />
-      <CountdownSection />
-      <LocationSection />
-      <GalleriesSection />
-      <AttendeesSection />
-      <FAQSection />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/gallery" element={<Gallery />} />
+      </Routes>
+    </Router>
   )
 }
 

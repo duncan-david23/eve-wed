@@ -5,7 +5,6 @@ import {
   Calendar, 
   Clock, 
   Heart, 
-  ExternalLink, 
   Navigation,
   Users,
   Music,
@@ -14,7 +13,7 @@ import {
   Sparkles,
   MessageCircle
 } from 'lucide-react';
-import location_img from '../assets/wed_loc.webp';
+import location_img from '../assets/venue_img.jpg';
 
 const LocationSection = () => {
   const containerVariants = {
@@ -36,15 +35,16 @@ const LocationSection = () => {
     },
   };
 
-  // Wedding details - Update these with your actual information
+  // Wedding details
   const weddingDetails = {
     date: "SEPTEMBER 4, 2026",
     time: "9:00 AM",
     dressCode: "Teal & Gold Elegance",
     reception: "Immediately Following Ceremony",
-    venue: "Pinnacle College ",
+    venue: "Pinnacle College",
+    address: "Akweteyman, Accra",
     googleMapsUrl: "https://www.google.com/maps/dir//Pinnacle+College,+Akweteyman/@5.6182397,-0.1340423,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0xfdf996faabe9be7:0x47e5bfccde59d735!2m2!1d-0.2362034!2d5.6167762?entry=ttu&g_ep=EgoyMDI2MDYxMC4wIKXMDSoASAFQAw%3D%3D",
-    whatsappNumber: "233508925171", // Replace with your actual WhatsApp number (without +)
+    whatsappNumber: "233508925171",
   };
 
   const detailsList = [
@@ -60,14 +60,14 @@ const LocationSection = () => {
 
   const openWhatsApp = () => {
     const message = encodeURIComponent(
-      `Hi! I'm interested in getting more information about Evelyn & Joe's wedding on ${weddingDetails.date} at ${weddingDetails.time}. Could you please provide more details? Thank you!`
+      `Hi! I'm interested in getting more information about Evelyn & Christian's wedding on ${weddingDetails.date} at ${weddingDetails.time}. Could you please provide more details? Thank you!`
     );
     window.open(`https://wa.me/${weddingDetails.whatsappNumber}?text=${message}`, '_blank');
   };
 
   return (
     <div className="relative min-h-screen bg-white overflow-hidden">
-      {/* Background Decor */}
+      {/* Dots Background - Kept */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
         <div className="absolute inset-0" style={{
           backgroundImage: 'radial-gradient(circle at 1px 1px, #000 1px, transparent 1px)',
@@ -75,9 +75,7 @@ const LocationSection = () => {
         }} />
       </div>
 
-      {/* Light Ray Effects - Teal and Gold */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-teal-200 rounded-full blur-[120px] opacity-20" />
-      <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-amber-200 rounded-full blur-[120px] opacity-15" />
+      {/* Removed Light Ray Effects - Performance */}
 
       <motion.div
         variants={containerVariants}
@@ -86,12 +84,12 @@ const LocationSection = () => {
         viewport={{ once: true, amount: 0.3 }}
         className="relative min-h-screen flex flex-col items-center justify-center px-4 py-16 sm:py-20 md:py-24"
       >
-        {/* Section Header - Wedding Colors */}
+        {/* Section Header */}
         <motion.div variants={itemVariants} className="text-center mb-12 md:mb-16">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-8 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <div className="w-8 h-px bg-amber-400" />
             <Sparkles className="w-4 h-4 text-amber-400" />
-            <div className="w-8 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <div className="w-8 h-px bg-amber-400" />
           </div>
           <h2 className="text-teal-500 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] mb-2 font-light">
             THE
@@ -99,7 +97,7 @@ const LocationSection = () => {
           <p className="text-gray-800 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-wide">
             Details
           </p>
-          <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mt-4" />
+          <div className="w-12 h-px bg-amber-400 mx-auto mt-4" />
         </motion.div>
 
         {/* Main Content Grid */}
@@ -152,10 +150,6 @@ const LocationSection = () => {
                     <Gift className="w-3.5 h-3.5 text-amber-400" />
                     <span>Gift registry available upon request</span>
                   </div>
-                  {/* <div className="flex items-center gap-3 text-gray-600 text-sm">
-                    <Music className="w-3.5 h-3.5 text-teal-400" />
-                    <span>Live band and open bar</span>
-                  </div> */}
                 </div>
               </div>
             </div>
@@ -164,8 +158,8 @@ const LocationSection = () => {
             <div className="space-y-6">
               {/* Image Card */}
               <div className="relative">
-                {/* Decorative Frame - Wedding Colors */}
-                <div className="absolute inset-[-1px] bg-gradient-to-r from-teal-300 via-amber-300 to-red-300 rounded-2xl shadow-lg" />
+                {/* Decorative Frame - Solid border */}
+                <div className="absolute inset-[-1px] border-4 border-teal-300 rounded-2xl shadow-lg" />
                 <div className="absolute inset-[-0.5px] bg-white rounded-2xl" />
                 
                 <img
@@ -197,14 +191,14 @@ const LocationSection = () => {
                   </div>
                 </div>
 
-                {/* Two Button Row - Wedding Colors */}
+                {/* Two Button Row */}
                 <div className="flex gap-3 mt-4">
-                  {/* Google Maps Button - Teal */}
+                  {/* Google Maps Button */}
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={openGoogleMaps}
-                    className="flex-1 group relative overflow-hidden rounded-xl bg-teal-50 border border-teal-200 px-4 py-3 text-teal-700 transition-all duration-300 hover:bg-teal-100 hover:border-teal-300 hover:text-teal-800"
+                    className="flex-1 rounded-xl bg-teal-500 border border-teal-500 px-4 py-3 text-white transition-all duration-300 hover:bg-teal-600 hover:border-teal-600"
                   >
                     <div className="relative flex items-center justify-center gap-2">
                       <Navigation className="w-4 h-4" />
@@ -212,12 +206,12 @@ const LocationSection = () => {
                     </div>
                   </motion.button>
 
-                  {/* WhatsApp Button - Gold/Amber */}
+                  {/* WhatsApp Button */}
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={openWhatsApp}
-                    className="flex-1 group relative overflow-hidden rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-amber-700 transition-all duration-300 hover:bg-amber-100 hover:border-amber-300 hover:text-amber-800"
+                    className="flex-1 rounded-xl bg-amber-500 border border-amber-500 px-4 py-3 text-white transition-all duration-300 hover:bg-amber-600 hover:border-amber-600"
                   >
                     <div className="relative flex items-center justify-center gap-2">
                       <MessageCircle className="w-4 h-4" />
@@ -225,28 +219,20 @@ const LocationSection = () => {
                     </div>
                   </motion.button>
                 </div>
-
-                {/* Additional Location Info */}
-                {/* <div className="mt-5 pt-4 border-t border-teal-100">
-                  <div className="flex items-center justify-between text-teal-400 text-xs">
-                    <span>Parking available on-site</span>
-                    <span>Valet service included</span>
-                  </div>
-                </div> */}
               </div>
             </div>
           </div>
         </motion.div>
 
-        {/* Decorative Bottom - Wedding Colors */}
+        {/* Decorative Bottom */}
         <motion.div
           variants={itemVariants}
           className="flex justify-center mt-12 md:mt-16"
         >
           <div className="flex items-center gap-2">
-            <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <div className="w-12 h-px bg-amber-400" />
             <Heart className="w-3 h-3 text-red-500 fill-red-500" />
-            <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <div className="w-12 h-px bg-amber-400" />
           </div>
         </motion.div>
       </motion.div>

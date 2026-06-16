@@ -9,12 +9,14 @@ import {
   ZoomIn,
   Image as ImageIcon
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const GalleriesSection = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleItems, setVisibleItems] = useState([]);
   const sectionRef = useRef(null);
+  const navigate = useNavigate();
 
   // Gallery Images - Just ID and URL with different sizes for shapes
   const galleryImages = [
@@ -175,7 +177,7 @@ const GalleriesSection = () => {
 
         {/* View More Button with hover animation */}
         <div className="flex justify-center mt-10 md:mt-14">
-          <button className="group px-8 py-3 bg-white border border-gray-300 rounded-full hover:border-rose-400 hover:shadow-lg transition-all duration-300 hover:scale-105">
+          <button onClick={() => navigate('/gallery')} className="group px-8 py-3 bg-white border border-gray-300 rounded-full hover:border-rose-400 hover:shadow-lg transition-all duration-300 hover:scale-105">
             <span className="text-gray-600 text-sm tracking-wide group-hover:text-rose-500 transition-colors duration-300">
               View Full Gallery
             </span>

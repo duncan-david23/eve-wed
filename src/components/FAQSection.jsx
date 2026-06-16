@@ -5,13 +5,11 @@ import {
   ChevronDown, 
   Heart, 
   Sparkles,
-  MapPin,
   Clock,
   Gift,
   Camera,
   Music,
   Car,
-  Droplets,
   Moon
 } from 'lucide-react';
 
@@ -22,7 +20,7 @@ const FAQSection = () => {
     {
       id: 1,
       question: "What is the dress code?",
-      answer: "We invite you to dress in our wedding colors - Teal Green, Gold, and Mauve! Feel free to incorporate these colors into your outfit. Formal or semi-formal attire is welcome as we celebrate this special day.",
+      answer: "We invite you to dress in our wedding colors - Teal Green, Gold, and Red! Feel free to incorporate these colors into your outfit. Formal or semi-formal attire is welcome as we celebrate this special day.",
       icon: HelpCircle
     },
     {
@@ -34,13 +32,13 @@ const FAQSection = () => {
     {
       id: 3,
       question: "What time should I arrive?",
-      answer: "The ceremony will begin promptly at 3:00 PM. We recommend arriving at least 30 minutes early to find parking and get settled before the celebration begins.",
+      answer: "The ceremony will begin promptly at 9:00 AM. We recommend arriving at least 30 minutes early to find parking and get settled before the celebration begins.",
       icon: Clock
     },
     {
       id: 4,
       question: "Will there be parking available?",
-      answer: "Yes, complimentary valet parking will be available at the venue. There will also be additional parking spaces nearby for overflow.",
+      answer: "Yes, parking will be available at the venue. There will also be additional parking spaces nearby for overflow.",
       icon: Car
     },
     {
@@ -58,7 +56,7 @@ const FAQSection = () => {
     {
       id: 7,
       question: "Will there be food and drinks?",
-      answer: "Yes! We will be serving a delicious dinner followed by an open bar with signature cocktails, wine, and beer. Please let us know of any dietary restrictions when you RSVP.",
+      answer: "Yes! We will be serving a delicious meal followed by refreshments. Please let us know of any dietary restrictions when you RSVP.",
       icon: Music
     },
     {
@@ -92,9 +90,17 @@ const FAQSection = () => {
     },
   };
 
+
+   const openWhatsApp = () => {
+    const message = encodeURIComponent(
+      `Hi! I need help with the wedding details. Could you please assist me? Thank you!`
+    );
+    window.open(`https://wa.me/233508925171?text=${message}`, '_blank');
+  };
+
   return (
     <div className="relative bg-white min-h-screen overflow-hidden">
-      {/* Background Decor */}
+      {/* Dots Background - Kept */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
         <div className="absolute inset-0" style={{
           backgroundImage: 'radial-gradient(circle at 1px 1px, #000 1px, transparent 1px)',
@@ -102,12 +108,10 @@ const FAQSection = () => {
         }} />
       </div>
 
-      {/* Light Ray Effects - Teal and Gold */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-teal-200 rounded-full blur-[120px] opacity-20" />
-      <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-amber-200 rounded-full blur-[120px] opacity-15" />
+      {/* Removed Light Ray Effects - Performance */}
 
       <div className="relative py-16 sm:py-20 md:py-24 px-4">
-        {/* Section Header - Wedding Colors */}
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -116,9 +120,9 @@ const FAQSection = () => {
           className="text-center mb-12 md:mb-16"
         >
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-8 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <div className="w-8 h-px bg-amber-400" />
             <HelpCircle className="w-5 h-5 text-teal-500" />
-            <div className="w-8 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <div className="w-8 h-px bg-amber-400" />
           </div>
           <h2 className="text-teal-500 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] mb-2 font-light">
             HAVE QUESTIONS?
@@ -126,7 +130,7 @@ const FAQSection = () => {
           <p className="text-gray-800 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-wide">
             Frequently Asked
           </p>
-          <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mt-4" />
+          <div className="w-12 h-px bg-amber-400 mx-auto mt-4" />
           <p className="text-gray-400 text-xs sm:text-sm mt-4 max-w-2xl mx-auto">
             Everything you need to know about our special day
           </p>
@@ -151,7 +155,7 @@ const FAQSection = () => {
                   className="bg-white border border-teal-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer"
                   onClick={() => toggleFAQ(index)}
                 >
-                  {/* Question Header - Wedding Colors */}
+                  {/* Question Header */}
                   <div className="flex items-center justify-between p-4 md:p-6">
                     <div className="flex items-center gap-3 flex-1">
                       <div className="flex-shrink-0 w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center">
@@ -170,7 +174,7 @@ const FAQSection = () => {
                     </motion.div>
                   </div>
 
-                  {/* Answer - Wedding Colors */}
+                  {/* Answer */}
                   <AnimatePresence>
                     {openIndex === index && (
                       <motion.div
@@ -197,7 +201,7 @@ const FAQSection = () => {
           </div>
         </motion.div>
 
-        {/* Still Have Questions Section - Wedding Colors */}
+        {/* Still Have Questions Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -215,14 +219,14 @@ const FAQSection = () => {
             <p className="text-gray-500 text-sm md:text-base font-light mb-4">
               Can't find what you're looking for? We're here to help!
             </p>
-            <button className="inline-flex items-center gap-2 px-6 py-2.5 bg-white border border-teal-200 rounded-full text-teal-600 hover:bg-teal-50 hover:border-teal-300 transition-all duration-300">
+            <button onClick={openWhatsApp} className="inline-flex items-center gap-2 px-6 py-2.5 bg-teal-500 text-white rounded-full hover:bg-teal-600 transition-all duration-300">
               <HelpCircle className="w-4 h-4" />
               <span className="text-sm font-light tracking-wide">Contact Us</span>
             </button>
           </div>
         </motion.div>
 
-        {/* Decorative Bottom - Wedding Colors */}
+        {/* Decorative Bottom */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -231,9 +235,9 @@ const FAQSection = () => {
           className="flex justify-center mt-12 md:mt-16"
         >
           <div className="flex items-center gap-2">
-            <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <div className="w-12 h-px bg-amber-400" />
             <Sparkles className="w-3 h-3 text-amber-400" />
-            <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <div className="w-12 h-px bg-amber-400" />
           </div>
         </motion.div>
       </div>

@@ -72,7 +72,7 @@ const CountdownSection = () => {
 
   return (
     <div className="relative min-h-screen bg-white overflow-hidden">
-      {/* Background Decor */}
+      {/* Dots Background - Kept */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0" style={{
           backgroundImage: 'radial-gradient(circle at 2px 2px, #000 1px, transparent 1px)',
@@ -80,19 +80,7 @@ const CountdownSection = () => {
         }} />
       </div>
 
-      {/* Light Ray Effects - Teal and Gold */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.06 }}
-        transition={{ duration: 1.5 }}
-        className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-teal-200 rounded-full blur-[120px]"
-      />
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.04 }}
-        transition={{ duration: 1.5, delay: 0.3 }}
-        className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-amber-200 rounded-full blur-[120px]"
-      />
+      {/* Removed Light Ray Effects - Performance */}
 
       <motion.div
         variants={containerVariants}
@@ -101,7 +89,7 @@ const CountdownSection = () => {
         viewport={{ once: true, amount: 0.3 }}
         className="relative min-h-screen flex flex-col items-center justify-center px-4 py-16 sm:py-20 md:py-24"
       >
-        {/* Section Title - Wedding Colors */}
+        {/* Section Title */}
         <motion.div variants={itemVariants} className="text-center mb-8 md:mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
             <Heart className="w-4 h-4 text-red-500 fill-red-500" />
@@ -114,7 +102,7 @@ const CountdownSection = () => {
           <p className="text-gray-700 text-lg sm:text-xl md:text-2xl lg:text-3xl font-light tracking-wide">
             to our forever begins
           </p>
-          <div className="w-12 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mt-4" />
+          <div className="w-12 h-px bg-amber-400 mx-auto mt-4" />
         </motion.div>
 
         {/* Main Content Container */}
@@ -122,13 +110,13 @@ const CountdownSection = () => {
           variants={itemVariants}
           className="relative w-full max-w-[340px] sm:max-w-[500px] md:max-w-[700px] lg:max-w-[900px] mx-auto"
         >
-          {/* White Card Background with Teal Border */}
+          {/* White Card */}
           <div className="bg-white shadow-2xl rounded-3xl border border-teal-100 p-4 sm:p-6 md:p-8">
             
-            {/* Image Section - Overlapping Design */}
+            {/* Image Section */}
             <div className="relative -mt-12 sm:-mt-16 md:-mt-20 mb-6 sm:mb-8 md:mb-10">
-              {/* Decorative Frame - Wedding Colors */}
-              <div className="absolute inset-[-3px] bg-gradient-to-r from-teal-300 via-amber-300 to-red-300 rounded-2xl sm:rounded-3xl" />
+              {/* Decorative Frame - Solid colors */}
+              <div className="absolute inset-[-3px] rounded-2xl sm:rounded-3xl border-4 border-teal-300" />
               <div className="absolute inset-[-1px] bg-white rounded-2xl sm:rounded-3xl" />
               
               {/* Image */}
@@ -141,7 +129,7 @@ const CountdownSection = () => {
                 className="relative w-full rounded-2xl sm:rounded-3xl shadow-xl"
               />
               
-              {/* Decorative Overlay Text - Gold accent */}
+              {/* Decorative Overlay Text */}
               <div className="absolute bottom-3 left-0 right-0 text-center">
                 <p className="text-amber-600/60 text-[8px] sm:text-[10px] tracking-[0.2em] font-light">
                     FOREVER BEGINS
@@ -149,9 +137,9 @@ const CountdownSection = () => {
               </div>
             </div>
 
-            {/* Countdown Timer - Teal Numbers */}
+            {/* Countdown Timer */}
             <div className="grid grid-cols-4 gap-2 sm:gap-4 md:gap-6 mb-6 sm:mb-8 md:mb-10">
-              {/* Days - NO leading zero */}
+              {/* Days */}
               <div className="text-center">
                 <motion.div
                   key={timeLeft.days}
@@ -167,12 +155,12 @@ const CountdownSection = () => {
                 </div>
               </div>
 
-              {/* Colon Separator - Gold */}
+              {/* Colon Separator */}
               <div className="flex items-center justify-center">
                 <div className="text-amber-300 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">:</div>
               </div>
 
-              {/* Hours - with leading zero */}
+              {/* Hours */}
               <div className="text-center">
                 <motion.div
                   key={timeLeft.hours}
@@ -188,12 +176,12 @@ const CountdownSection = () => {
                 </div>
               </div>
 
-              {/* Colon Separator - Gold */}
+              {/* Colon Separator */}
               <div className="flex items-center justify-center">
                 <div className="text-amber-300 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">:</div>
               </div>
 
-              {/* Minutes - with leading zero */}
+              {/* Minutes */}
               <div className="text-center">
                 <motion.div
                   key={timeLeft.minutes}
@@ -209,12 +197,12 @@ const CountdownSection = () => {
                 </div>
               </div>
 
-              {/* Colon Separator - Gold */}
+              {/* Colon Separator */}
               <div className="flex items-center justify-center">
                 <div className="text-amber-300 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">:</div>
               </div>
 
-              {/* Seconds - with leading zero */}
+              {/* Seconds */}
               <div className="text-center">
                 <motion.div
                   key={timeLeft.seconds}
@@ -231,7 +219,7 @@ const CountdownSection = () => {
               </div>
             </div>
 
-            {/* Wedding Date Reminder - Updated to September 4, 2026 */}
+            {/* Wedding Date Reminder */}
             <motion.div
               variants={itemVariants}
               className="text-center pt-4 sm:pt-6 border-t border-teal-100"
@@ -245,7 +233,7 @@ const CountdownSection = () => {
             </motion.div>
           </div>
 
-          {/* Decorative Bottom Element - Gold accent */}
+          {/* Decorative Bottom */}
           <motion.div
             variants={itemVariants}
             className="flex justify-center mt-6 sm:mt-8"
