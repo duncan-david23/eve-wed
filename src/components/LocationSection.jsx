@@ -226,7 +226,7 @@ const LocationSection = () => {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     onClick={openWhatsApp}
-                    className="flex items-center justify-center gap-3 bg-rose-500 hover:bg-rose-600 text-white py-4 px-6 rounded-2xl transition-all duration-300 font-light"
+                    className="flex items-center justify-center gap-3 bg-mauve-700 hover:bg-mauve-600 text-white py-4 px-6 rounded-2xl transition-all duration-300 font-light"
                   >
                     <MessageCircle className="w-4 h-4" />
                     <span>Message Us</span>

@@ -146,16 +146,43 @@ const HeroSection = () => {
       {/* Content */}
       <div className="relative min-h-screen flex flex-col md:flex-row">
         
-        {/* Image Section */}
-        <div className="relative w-full h-screen md:h-auto md:w-1/2 lg:w-3/5">
-          <div className="absolute inset-0">
+        {/* Image Section with Zoom Animation */}
+        <div className="relative w-full h-screen md:h-auto md:w-1/2 lg:w-3/5 overflow-hidden">
+          {/* Animated Image Container - Faster Zoom */}
+          <motion.div 
+            className="absolute inset-0"
+            initial={{ scale: 1.1 }}
+            animate={{ 
+              scale: [1.1, 1.2, 1.05, 1.15, 1.1],
+            }}
+            transition={{
+              duration: 8,
+              ease: "easeInOut",
+              times: [0, 0.25, 0.5, 0.75, 1],
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          >
             <img
               src={HeroImage}
-              alt="Selorm & Ewurah"
+              alt="Selorm & Ewurah Abena"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-black/40" />
-          </div>
+          </motion.div>
+          
+          {/* Overlay with subtle pulse */}
+          <motion.div 
+            className="absolute inset-0 bg-black/40"
+            animate={{
+              opacity: [0.4, 0.3, 0.4]
+            }}
+            transition={{
+              duration: 4,
+              ease: "easeInOut",
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          />
 
           {/* Mobile Content */}
           <div className="md:hidden absolute inset-0 flex items-center justify-center px-4">
@@ -163,7 +190,7 @@ const HeroSection = () => {
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="text-center"
+              className="text-center z-10"
             >
               <motion.h1 variants={itemVariants} className="font-light text-5xl text-white tracking-[0.15em]">
                 SELORM
@@ -179,7 +206,7 @@ const HeroSection = () => {
               </motion.div>
               
               <motion.h1 variants={itemVariants} className="font-light text-5xl text-white tracking-[0.15em]">
-                EWURAH
+                EWURAH ABENA
               </motion.h1>
 
               <motion.div variants={itemVariants} className="relative mt-6">
@@ -254,7 +281,7 @@ const HeroSection = () => {
             </motion.div>
             
             <motion.h1 variants={itemVariants} className="font-light text-6xl lg:text-7xl text-gray-800 tracking-[0.15em]">
-              EWURAH
+              EWURAH ABENA
             </motion.h1>
 
             <motion.div variants={itemVariants} className="relative mt-6">

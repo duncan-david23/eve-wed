@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 const GalleriesSection = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loadedImages, setLoadedImages] = useState({});
   const navigate = useNavigate();
 
   const galleryImages = [
@@ -30,6 +31,10 @@ const GalleriesSection = () => {
     { id: 11, url: "https://images.unsplash.com/photo-1511795409674-a3212fa0ad27?w=800&h=800&fit=crop" },
     { id: 12, url: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&h=1000&fit=crop" }
   ];
+
+  const handleImageLoad = (id) => {
+    setLoadedImages(prev => ({ ...prev, [id]: true }));
+  };
 
   const openLightbox = useCallback((image, index) => {
     setSelectedImage(image);
@@ -48,9 +53,8 @@ const GalleriesSection = () => {
       : (currentIndex - 1 + galleryImages.length) % galleryImages.length;
     setCurrentIndex(newIndex);
     setSelectedImage(galleryImages[newIndex]);
-  }, [currentIndex]);
+  }, [currentIndex, galleryImages]);
 
-  // Keyboard navigation
   React.useEffect(() => {
     const handleKeyDown = (e) => {
       if (!selectedImage) return;
@@ -62,6 +66,83 @@ const GalleriesSection = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedImage, navigateImage, closeLightbox]);
+
+  // --- EFFECT VARIANTS COPIED DIRECTLY FROM YOUR ORIGINAL CODE ---
+  
+  // ZOOM IN EFFECT - Starts small and grows to full size
+  const itemVariants = {
+    hidden: { 
+      opacity: 0, 
+      scale: 0.6,
+      y: 60,
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 20,
+        mass: 1.2,
+        duration: 1.2,
+      },
+    },
+  };
+
+  // Image fade-in from white with zoom
+  const imageFadeVariants = {
+    hidden: { 
+      opacity: 0,
+      scale: 0.7,
+    },
+    visible: (loaded) => ({
+      opacity: loaded ? 1 : 0,
+      scale: loaded ? 1 : 0.7,
+      transition: { 
+        duration: 1.5, 
+        ease: "easeOut",
+        delay: 0.1,
+      },
+    }),
+  };
+
+  const whiteOverlayVariants = {
+    hidden: { opacity: 1 },
+    visible: (loaded) => ({
+      opacity: loaded ? 0 : 1,
+      transition: { 
+        duration: 1.5, 
+        ease: "easeOut",
+        delay: 0.1,
+      },
+    }),
+  };
+
+  const lightboxVariants = {
+    hidden: { opacity: 0, scale: 0.88, y: 40 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 200, damping: 25, mass: 0.8, duration: 0.8 },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.88,
+      y: 30,
+      transition: { duration: 0.3, ease: "easeInOut" },
+    },
+  };
+
+  const floatingHeart = {
+    initial: { y: 0, scale: 1 },
+    animate: {
+      y: [-6, 6, -6],
+      scale: [1, 1.05, 1],
+      transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
+    },
+  };
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-zinc-50 via-white to-zinc-100 overflow-hidden">
@@ -79,14 +160,19 @@ const GalleriesSection = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-center mb-12 md:mb-16"
         >
           <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="h-px w-12 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
-            <Camera className="w-6 h-6 text-teal-500" />
-            <Heart className="w-6 h-6 text-rose-500 fill-rose-500" />
-            <Camera className="w-6 h-6 text-teal-500" />
-            <div className="h-px w-12 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <motion.div variants={floatingHeart} initial="initial" animate="animate">
+              <Camera className="w-6 h-6 text-teal-500" />
+            </motion.div>
+            <motion.div variants={floatingHeart} initial="initial" animate="animate" transition={{ delay: 0.3 }}>
+              <Heart className="w-6 h-6 text-rose-500 fill-rose-500" />
+            </motion.div>
+            <motion.div variants={floatingHeart} initial="initial" animate="animate" transition={{ delay: 0.6 }}>
+              <Camera className="w-6 h-6 text-teal-500" />
+            </motion.div>
           </div>
           
           <h2 className="text-teal-600 text-sm font-light tracking-[4px] uppercase mb-3">CAPTURED MOMENTS</h2>
@@ -104,20 +190,40 @@ const GalleriesSection = () => {
             {galleryImages.map((image, index) => (
               <motion.div
                 key={image.id}
-                initial={{ opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: Math.min(index * 0.04, 0.6) }}
-                whileHover={{ scale: 1.02 }}
-                className="relative group cursor-pointer break-inside-avoid mb-4 overflow-hidden rounded-3xl shadow-lg"
+                variants={itemVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.1 }}
+                whileHover={{ 
+                  scale: 1.04, 
+                  y: -6,
+                  transition: { duration: 0.3 }
+                }}
+                whileTap={{ scale: 0.97 }}
+                className="relative group cursor-pointer break-inside-avoid mb-4 overflow-hidden rounded-3xl shadow-lg bg-white"
                 onClick={() => openLightbox(image, index)}
               >
-                <div className="relative overflow-hidden">
-                  <img
+                <div className="relative overflow-hidden bg-white">
+                  {/* Image with zoom-in from small */}
+                  <motion.img
                     src={image.url}
                     alt={`Wedding moment ${image.id}`}
                     loading="lazy"
-                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                    custom={loadedImages[image.id]}
+                    variants={imageFadeVariants}
+                    initial="hidden"
+                    animate="visible"
+                    onLoad={() => handleImageLoad(image.id)}
+                  />
+                  
+                  {/* White overlay that fades out */}
+                  <motion.div 
+                    className="absolute inset-0 bg-white pointer-events-none"
+                    custom={loadedImages[image.id]}
+                    variants={whiteOverlayVariants}
+                    initial="hidden"
+                    animate="visible"
                   />
                   
                   {/* Elegant Hover Overlay */}
@@ -147,14 +253,16 @@ const GalleriesSection = () => {
         </div>
       </div>
 
-      {/* Lightbox */}
+      {/* Lightbox Modal using your exact variations */}
       <AnimatePresence>
         {selectedImage && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95" onClick={closeLightbox}>
+          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95">
+            <div className="absolute inset-0" onClick={closeLightbox} />
+
             <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
               onClick={closeLightbox}
               className="absolute top-6 right-6 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all backdrop-blur"
             >
@@ -162,9 +270,9 @@ const GalleriesSection = () => {
             </motion.button>
 
             <motion.button
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
+              initial={{ x: -30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -30, opacity: 0 }}
               onClick={(e) => { e.stopPropagation(); navigateImage('prev'); }}
               className="absolute left-6 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all backdrop-blur hidden md:block"
             >
@@ -172,9 +280,9 @@ const GalleriesSection = () => {
             </motion.button>
 
             <motion.button
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
+              initial={{ x: 30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: 30, opacity: 0 }}
               onClick={(e) => { e.stopPropagation(); navigateImage('next'); }}
               className="absolute right-6 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all backdrop-blur hidden md:block"
             >
@@ -182,18 +290,29 @@ const GalleriesSection = () => {
             </motion.button>
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.92 }}
-              transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+              variants={lightboxVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
               className="relative max-w-[92vw] max-h-[92vh] flex items-center justify-center p-4"
               onClick={(e) => e.stopPropagation()}
             >
-              <img
-                src={selectedImage.url}
-                alt="Wedding moment"
-                className="max-w-full max-h-[88vh] object-contain rounded-2xl shadow-2xl"
-              />
+              <div className="relative bg-white rounded-2xl overflow-hidden shadow-2xl">
+                <motion.img
+                  src={selectedImage.url}
+                  alt="Wedding moment"
+                  className="max-w-full max-h-[88vh] object-contain rounded-2xl"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
+                />
+                <motion.div 
+                  className="absolute inset-0 bg-white rounded-2xl"
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 0 }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
+                />
+              </div>
             </motion.div>
 
             {/* Image Counter */}

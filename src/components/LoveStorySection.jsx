@@ -1,224 +1,331 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Heart, 
-  Sparkles, 
   User,
   Coffee,
   Sun,
   Moon,
   Star,
   Camera,
-  Gift
+  Gift,
+  Flower2
 } from 'lucide-react';
+
+// Hook: fires once when the ref element enters the viewport
+function useInView(options = {}) {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setInView(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.15, ...options });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, inView];
+}
+
+// ─── Animated wrappers ────────────────────────────────────────────────────────
+
+// Drops in from above with a spring-like overshoot using pure CSS
+function DropIn({ children, delay = 0, className = '' }) {
+  const [ref, inView] = useInView();
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView ? 'translateY(0) scale(1)' : 'translateY(-48px) scale(0.97)',
+        transition: `opacity 0.5s ease ${delay}s, transform 0.7s cubic-bezier(0.34,1.56,0.64,1) ${delay}s`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+// Slides up from below — used for header text elements
+function FadeUp({ children, delay = 0, className = '' }) {
+  const [ref, inView] = useInView();
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView ? 'translateY(0)' : 'translateY(24px)',
+        transition: `opacity 0.6s ease ${delay}s, transform 0.6s cubic-bezier(0.34,1.56,0.64,1) ${delay}s`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
+
+const brideStory = {
+  name: "Ewurah",
+  title: "The Bride",
+  emoji: "👰",
+  story: [
+    { year: "2020", icon: Coffee, text: "It all started with a coffee date that changed everything. I was immediately drawn to his warmth, his laughter, and the way his eyes lit up when he talked about his dreams." },
+    { year: "2021", icon: Sun,    text: "Through the ups and downs of life, we grew together. Every sunrise reminded me that I had found my sunshine in him. Our love deepened with each passing day." },
+    { year: "2022", icon: Heart,  text: "He asked me to be his forever under the stars. In that magical moment, I knew I had found my home. My heart said yes before I could even speak the words." },
+    { year: "2023", icon: Star,   text: "Planning our future together has been the greatest adventure. From choosing colors to dreaming about our forever, every step has been filled with love and excitement." },
+  ],
+  quote: "From the moment I met him, I knew he was the one my soul had been searching for.",
+};
+
+const groomStory = {
+  name: "Selorm",
+  title: "The Groom",
+  emoji: "🤵",
+  story: [
+    { year: "2020", icon: Coffee, text: "That first coffee date was unforgettable. I saw something special in her — a spark, a warmth, a beauty that went far beyond what my eyes could see." },
+    { year: "2021", icon: Moon,   text: "She became my peace, my anchor. Through every storm, her love was the calm I needed. I knew I had found someone truly extraordinary." },
+    { year: "2022", icon: Gift,   text: "Getting down on one knee was the easiest decision I've ever made. Seeing her eyes fill with tears of joy, I knew I had just made the best promise of my life." },
+    { year: "2023", icon: Camera, text: "Every moment with her is a memory I want to capture forever. From wedding planning to building our dreams, I can't wait to start our forever together." },
+  ],
+  quote: "She is my greatest blessing, my best friend, and the love of my life. Forever with her is not long enough.",
+};
+
+const YEAR_COLORS = {
+  "2020": "bg-teal-500",
+  "2021": "bg-amber-500",
+  "2022": "bg-purple-500",
+  "2023": "bg-teal-500",
+};
+
+// ─── Timeline item with per-item in-view trigger ──────────────────────────────
+
+function TimelineItem({ item, index, cardInView }) {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (!cardInView) return;
+    // Stagger each item after the card itself is visible
+    const t = setTimeout(() => setVisible(true), 400 + index * 200);
+    return () => clearTimeout(t);
+  }, [cardInView, index]);
+
+  const Icon = item.icon;
+  const yearBg = YEAR_COLORS[item.year] ?? 'bg-teal-500';
+
+  return (
+    <div
+      className="flex items-start gap-4"
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'translateY(0)' : 'translateY(-28px)',
+        transition: `opacity 0.5s ease, transform 0.65s cubic-bezier(0.34,1.56,0.64,1)`,
+      }}
+    >
+      {/* Year badge */}
+      <div
+        className={`flex-shrink-0 w-16 h-16 rounded-2xl ${yearBg} flex flex-col items-center justify-center border border-white/20 shadow-sm`}
+      >
+        <span className="text-[9px] font-medium text-white uppercase tracking-widest">Year</span>
+        <span className="text-lg font-light text-white">{item.year}</span>
+      </div>
+
+      {/* Content */}
+      <div
+        className="flex-1 pt-1"
+        style={{
+          opacity: visible ? 1 : 0,
+          transform: visible ? 'translateX(0)' : 'translateX(-12px)',
+          transition: `opacity 0.5s ease ${0.08}s, transform 0.5s ease ${0.08}s`,
+        }}
+      >
+        <div className="flex items-center gap-2 mb-2">
+          <div className="p-1.5 rounded-xl bg-white/15 border border-white/20">
+            <Icon className="w-4 h-4 text-white" />
+          </div>
+          <div className="h-px flex-1 bg-white/20" />
+        </div>
+        <p className="text-white/90 text-[13px] md:text-sm leading-relaxed">{item.text}</p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Story card ───────────────────────────────────────────────────────────────
+
+function StoryCard({ storyData, isBride, delay = 0 }) {
+  const [cardRef, cardInView] = useInView();
+  const cardBg   = isBride ? 'bg-teal-600'   : 'bg-purple-600';
+  const subColor = isBride ? 'text-teal-200'  : 'text-purple-200';
+
+  return (
+    <div
+      ref={cardRef}
+      className={`${cardBg} rounded-3xl shadow-2xl overflow-hidden`}
+      style={{
+        opacity: cardInView ? 1 : 0,
+        transform: cardInView ? 'translateY(0) scale(1)' : 'translateY(-52px) scale(0.96)',
+        transition: `opacity 0.55s ease ${delay}s, transform 0.75s cubic-bezier(0.34,1.56,0.64,1) ${delay}s`,
+      }}
+    >
+      {/* Header */}
+      <div className="p-8 md:p-10">
+        <div className="flex flex-col sm:flex-row items-center gap-5 mb-8">
+          <div className="w-20 h-20 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-4xl flex-shrink-0">
+            {storyData.emoji}
+          </div>
+          <div className="text-center sm:text-left">
+            <h3 className="text-3xl sm:text-4xl font-light text-white">{storyData.name}</h3>
+            <p className={`${subColor} text-base font-light`}>{storyData.title}</p>
+          </div>
+        </div>
+
+        {/* Quote — fades in shortly after card lands */}
+        <div
+          className="p-5 bg-white/10 border border-white/20 rounded-2xl italic text-white/90 leading-relaxed text-sm"
+          style={{
+            opacity: cardInView ? 1 : 0,
+            transform: cardInView ? 'translateY(0)' : 'translateY(10px)',
+            transition: `opacity 0.55s ease ${delay + 0.25}s, transform 0.55s ease ${delay + 0.25}s`,
+          }}
+        >
+          <span className="text-amber-300 text-xl not-italic">"</span>
+          {storyData.quote}
+          <span className="text-amber-300 text-xl not-italic">"</span>
+        </div>
+      </div>
+
+      {/* Timeline — items reveal one by one after card is visible */}
+      <div className="px-8 md:px-10 pb-8 md:pb-10 pt-4 bg-white/5 space-y-7">
+        {storyData.story.map((item, i) => (
+          <TimelineItem key={i} item={item} index={i} cardInView={cardInView} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Main section ─────────────────────────────────────────────────────────────
 
 const LoveStorySection = () => {
   const [activeStory, setActiveStory] = useState('both');
 
-  const brideStory = {
-    name: "Ewurah",
-    title: "The Bride",
-    emoji: "👰",
-    story: [
-      { year: "2020", icon: Coffee, text: "It all started with a coffee date that changed everything. I was immediately drawn to his warmth, his laughter, and the way his eyes lit up when he talked about his dreams.", color: "text-teal-500" },
-      { year: "2021", icon: Sun, text: "Through the ups and downs of life, we grew together. Every sunrise reminded me that I had found my sunshine in him. Our love deepened with each passing day.", color: "text-amber-400" },
-      { year: "2022", icon: Heart, text: "He asked me to be his forever under the stars. In that magical moment, I knew I had found my home. My heart said yes before I could even speak the words.", color: "text-rose-500" },
-      { year: "2023", icon: Star, text: "Planning our future together has been the greatest adventure. From choosing colors to dreaming about our forever, every step has been filled with love and excitement.", color: "text-teal-500" }
-    ],
-    quote: "From the moment I met him, I knew he was the one my soul had been searching for."
-  };
-
-  const groomStory = {
-    name: "Selorm",
-    title: "The Groom",
-    emoji: "🤵",
-    story: [
-      { year: "2020", icon: Coffee, text: "That first coffee date was unforgettable. I saw something special in her - a spark, a warmth, a beauty that went far beyond what my eyes could see.", color: "text-teal-500" },
-      { year: "2021", icon: Moon, text: "She became my peace, my anchor. Through every storm, her love was the calm I needed. I knew I had found someone truly extraordinary.", color: "text-amber-400" },
-      { year: "2022", icon: Gift, text: "Getting down on one knee was the easiest decision I've ever made. Seeing her eyes fill with tears of joy, I knew I had just made the best promise of my life.", color: "text-rose-500" },
-      { year: "2023", icon: Camera, text: "Every moment with her is a memory I want to capture forever. From wedding planning to building our dreams, I can't wait to start our forever together.", color: "text-teal-500" }
-    ],
-    quote: "She is my greatest blessing, my best friend, and the love of my life. Forever with her is not long enough."
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] } },
-  };
-
-  const timelineItemVariants = {
-    hidden: { opacity: 0, x: -30 },
-    visible: (i) => ({
-      opacity: 1,
-      x: 0,
-      transition: { delay: i * 0.15, duration: 0.6, ease: "easeOut" }
-    }),
-  };
-
-  const renderStoryCard = (storyData, type) => {
-    const isBride = type === 'bride';
-    const { name, title, emoji, quote, story } = isBride ? brideStory : groomStory;
-
-    return (
-      <motion.div
-        key={type}
-        variants={itemVariants}
-        className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white overflow-hidden"
-      >
-        {/* Header */}
-        <div className="bg-gradient-to-br from-teal-50 via-amber-50 to-rose-50 p-8 md:p-10">
-          <div className="flex flex-col sm:flex-row items-center gap-6">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white shadow-md flex items-center justify-center text-5xl flex-shrink-0">
-              {emoji}
-            </div>
-            <div className="text-center sm:text-left">
-              <h3 className="text-3xl sm:text-4xl font-light text-zinc-800">{name}</h3>
-              <p className="text-teal-600 text-lg font-light">{title}</p>
-            </div>
-          </div>
-
-          <div className="mt-8 p-6 bg-white/70 backdrop-blur rounded-2xl border border-white/80 italic text-zinc-600 leading-relaxed">
-            “{quote}”
-          </div>
-        </div>
-
-        {/* Timeline */}
-        <div className="p-8 md:p-10">
-          <div className="space-y-10 relative before:absolute before:left-6 before:top-3 before:bottom-3 before:w-px before:bg-gradient-to-b before:from-teal-200 before:via-amber-200 before:to-transparent">
-            {story.map((item, index) => (
-              <motion.div
-                key={index}
-                custom={index}
-                variants={timelineItemVariants}
-                initial="hidden"
-                animate="visible"
-                className="relative pl-16"
-              >
-                <div className="absolute left-0 w-12 h-12 rounded-2xl bg-white shadow flex items-center justify-center border border-teal-100">
-                  <item.icon className={`w-6 h-6 ${item.color}`} />
-                </div>
-                
-                <div className="text-amber-400 text-sm tracking-widest font-light mb-2">{item.year}</div>
-                <p className="text-zinc-600 leading-relaxed text-[15px] md:text-base">
-                  {item.text}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-    );
-  };
-
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-zinc-50 via-white to-zinc-100 overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, #111827 0.8px, transparent 1px)',
+    <div className="relative min-h-screen bg-gray-50 overflow-hidden">
+      {/* Dot background */}
+      <div
+        className="absolute inset-0 opacity-20 pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(circle at 2px 2px, #6B7280 0.8px, transparent 1px)',
           backgroundSize: '44px 44px',
-        }} />
-      </div>
+        }}
+      />
 
       <div className="relative py-20 sm:py-24 md:py-28 px-6">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12 md:mb-16"
-        >
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="h-px w-12 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
-            <Heart className="w-6 h-6 text-rose-500 fill-rose-500" />
-            <div className="h-px w-12 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
-          </div>
-          
-          <h2 className="text-teal-600 text-sm font-light tracking-[4px] uppercase mb-3">OUR JOURNEY</h2>
-          <p className="text-4xl sm:text-5xl md:text-6xl font-light text-zinc-800 tracking-tight">
-            How We Found Each Other
-          </p>
-          <p className="text-zinc-500 mt-4 max-w-md mx-auto text-sm sm:text-base">
-            A beautiful story of love, growth, and destiny
-          </p>
-        </motion.div>
 
-        {/* Toggle Tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex justify-center mb-12"
-        >
-          <div className="inline-flex bg-white rounded-3xl p-1.5 shadow-lg border border-zinc-100">
+        {/* ── Section header ── */}
+        <div className="text-center mb-12 md:mb-16">
+          <FadeUp delay={0}>
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <div className="h-px w-12 bg-amber-400" />
+              <div className="flex items-center gap-2">
+                <Heart className="w-5 h-5 text-teal-500 fill-teal-500" />
+                <Flower2 className="w-5 h-5 text-purple-500" />
+                <Heart className="w-5 h-5 text-teal-500 fill-teal-500" />
+              </div>
+              <div className="h-px w-12 bg-amber-400" />
+            </div>
+          </FadeUp>
+
+          <FadeUp delay={0.1}>
+            <h2 className="text-teal-600 text-xs font-light tracking-[4px] uppercase mb-3">
+              Our Journey
+            </h2>
+          </FadeUp>
+
+          <FadeUp delay={0.2}>
+            <p className="text-4xl sm:text-5xl md:text-6xl font-light text-gray-800 tracking-tight">
+              How We Found Each Other
+            </p>
+          </FadeUp>
+
+          <FadeUp delay={0.3}>
+            <p className="text-gray-500 mt-4 max-w-md mx-auto text-sm sm:text-base">
+              A beautiful story of love, growth, and destiny
+            </p>
+          </FadeUp>
+        </div>
+
+        {/* ── Toggle tabs ── */}
+        <DropIn delay={0.35} className="flex justify-center mb-12">
+          <div className="inline-flex bg-white rounded-3xl p-1.5 shadow-lg border border-gray-200">
             {[
-              { label: "Both", value: "both", icon: Heart },
-              { label: "Bride", value: "bride", icon: User },
-              { label: "Groom", value: "groom", icon: User }
-            ].map((tab) => (
+              { label: "Both",  value: "both",  Icon: Heart },
+              { label: "Bride", value: "bride", Icon: User  },
+              { label: "Groom", value: "groom", Icon: User  },
+            ].map(({ label, value, Icon }) => (
               <button
-                key={tab.value}
-                onClick={() => setActiveStory(tab.value)}
-                className={`px-6 py-3 rounded-3xl text-sm font-light transition-all flex items-center gap-2
-                  ${activeStory === tab.value 
-                    ? 'bg-teal-600 text-white shadow' 
-                    : 'text-zinc-500 hover:text-zinc-700'
+                key={value}
+                onClick={() => setActiveStory(value)}
+                className={`px-6 py-3 rounded-3xl text-sm font-light transition-all flex items-center gap-2 active:scale-95
+                  ${activeStory === value
+                    ? 'bg-teal-600 text-white shadow-md'
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                   }`}
               >
-                <tab.icon className="w-4 h-4" />
-                {tab.label}
+                <Icon className="w-4 h-4" />
+                {label}
               </button>
             ))}
           </div>
-        </motion.div>
+        </DropIn>
 
-        {/* Stories Container */}
+        {/* ── Cards ── */}
         <div className="max-w-5xl mx-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeStory}
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              exit={{ opacity: 0 }}
-              className={`grid gap-8 md:gap-12 ${
-                activeStory === 'both' 
-                  ? 'lg:grid-cols-2' 
-                  : 'max-w-2xl mx-auto'
-              }`}
-            >
-              {activeStory === 'both' ? (
-                <>
-                  {renderStoryCard(brideStory, 'bride')}
-                  {renderStoryCard(groomStory, 'groom')}
-                </>
-              ) : activeStory === 'bride' ? (
-                renderStoryCard(brideStory, 'bride')
-              ) : (
-                renderStoryCard(groomStory, 'groom')
-              )}
-            </motion.div>
-          </AnimatePresence>
+          <div
+            className={`grid gap-8 md:gap-12 ${
+              activeStory === 'both' ? 'lg:grid-cols-2' : 'max-w-2xl mx-auto'
+            }`}
+          >
+            {(activeStory === 'both' || activeStory === 'bride') && (
+              <StoryCard
+                key={`bride-${activeStory}`}
+                storyData={brideStory}
+                isBride={true}
+                delay={0}
+              />
+            )}
+            {(activeStory === 'both' || activeStory === 'groom') && (
+              <StoryCard
+                key={`groom-${activeStory}`}
+                storyData={groomStory}
+                isBride={false}
+                delay={activeStory === 'both' ? 0.14 : 0}
+              />
+            )}
+          </div>
         </div>
 
-        {/* Bottom Accent */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="flex justify-center mt-16"
-        >
-          <div className="flex items-center gap-4 text-amber-400/60">
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-amber-400" />
-            <Sparkles className="w-5 h-5" />
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-amber-400" />
+        {/* ── Bottom accent ── */}
+        <FadeUp delay={0.5} className="flex justify-center mt-16">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-px bg-teal-400" />
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full bg-teal-500" />
+              <div className="w-2 h-2 rounded-full bg-purple-500" />
+              <div className="w-2 h-2 rounded-full bg-amber-500" />
+            </div>
+            <div className="w-12 h-px bg-amber-400" />
           </div>
-        </motion.div>
+        </FadeUp>
+
       </div>
     </div>
   );

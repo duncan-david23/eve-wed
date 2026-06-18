@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Heart, 
@@ -18,6 +18,8 @@ const Gallery = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [viewMode, setViewMode] = useState('grid');
   const [isDownloading, setIsDownloading] = useState(false);
+  const [loadedImages, setLoadedImages] = useState({});
+  const [visibleItems, setVisibleItems] = useState([]);
 
   const galleryImages = [
     { id: 1, url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=1200&fit=crop", size: "large", title: "The Vows" },
@@ -36,6 +38,40 @@ const Gallery = () => {
     { id: 14, url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&h=600&fit=crop", size: "wide", title: "Venue" },
     { id: 15, url: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&h=1200&fit=crop", size: "tall", title: "The Dress" },
   ];
+
+  const imageRefs = useRef([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = parseInt(entry.target.dataset.index);
+            setVisibleItems(prev => {
+              if (!prev.includes(index)) {
+                return [...prev, index];
+              }
+              return prev;
+            });
+          }
+        });
+      },
+      { 
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      }
+    );
+
+    imageRefs.current.forEach(ref => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleImageLoad = (id) => {
+    setLoadedImages(prev => ({ ...prev, [id]: true }));
+  };
 
   const openLightbox = useCallback((image, index) => {
     setSelectedImage(image);
@@ -77,93 +113,78 @@ const Gallery = () => {
     }
   }, []);
 
-  // Beautiful drop-in animation variants
+  // ZOOM IN EFFECT - Starts small and grows to full size
   const itemVariants = {
     hidden: { 
       opacity: 0, 
-      y: 120, 
-      scale: 0.85,
-      rotate: -5,
-      filter: "blur(4px)",
+      scale: 0.6,
+      y: 60,
     },
     visible: {
       opacity: 1,
-      y: 0,
       scale: 1,
-      rotate: 0,
-      filter: "blur(0px)",
+      y: 0,
       transition: {
         type: "spring",
-        stiffness: 180,
-        damping: 22,
-        mass: 0.8,
-      },
-    },
-    exit: {
-      opacity: 0,
-      y: -60,
-      scale: 0.9,
-      rotate: 3,
-      filter: "blur(4px)",
-      transition: {
-        duration: 0.4,
-        ease: "easeInOut",
+        stiffness: 100,
+        damping: 20,
+        mass: 1.2,
+        duration: 1.2,
       },
     },
   };
 
-  // Stagger children container
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.06,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  // Lightbox animation
-  const lightboxVariants = {
+  // Image fade-in from white with zoom
+  const imageFadeVariants = {
     hidden: { 
-      opacity: 0, 
-      scale: 0.88,
-      y: 40,
+      opacity: 0,
+      scale: 0.7,
     },
+    visible: (loaded) => ({
+      opacity: loaded ? 1 : 0,
+      scale: loaded ? 1 : 0.7,
+      transition: { 
+        duration: 1.5, 
+        ease: "easeOut",
+        delay: 0.1,
+      },
+    }),
+  };
+
+  const whiteOverlayVariants = {
+    hidden: { opacity: 1 },
+    visible: (loaded) => ({
+      opacity: loaded ? 0 : 1,
+      transition: { 
+        duration: 1.5, 
+        ease: "easeOut",
+        delay: 0.1,
+      },
+    }),
+  };
+
+  const lightboxVariants = {
+    hidden: { opacity: 0, scale: 0.88, y: 40 },
     visible: {
       opacity: 1,
       scale: 1,
       y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 250,
-        damping: 25,
-        mass: 0.6,
-      },
+      transition: { type: "spring", stiffness: 200, damping: 25, mass: 0.8, duration: 0.8 },
     },
     exit: {
       opacity: 0,
       scale: 0.88,
       y: 30,
-      transition: {
-        duration: 0.25,
-        ease: "easeInOut",
-      },
+      transition: { duration: 0.3, ease: "easeInOut" },
     },
   };
 
-  // Floating hearts in header
   const floatingHeart = {
     initial: { y: 0, scale: 1 },
     animate: {
       y: [-6, 6, -6],
       scale: [1, 1.05, 1],
-      transition: {
-        duration: 2.5,
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
+      transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
     },
   };
 
@@ -202,6 +223,7 @@ const Gallery = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-center mb-12 md:mb-16"
         >
           <div className="flex items-center justify-center gap-4 mb-6">
@@ -227,6 +249,7 @@ const Gallery = () => {
           initial={{ opacity: 0, y: -10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
           className="flex justify-center mb-10"
         >
           <div className="inline-flex bg-white rounded-3xl p-1.5 shadow-sm border border-zinc-200">
@@ -253,27 +276,25 @@ const Gallery = () => {
           </div>
         </motion.div>
 
-        {/* Gallery Grid - Drop-in animations */}
+        {/* Gallery Grid - ZOOM IN EFFECT */}
         <div className="max-w-7xl mx-auto">
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.1 }}
-            className={`grid ${
-              viewMode === 'grid' 
-                ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 auto-rows-min' 
-                : 'grid-cols-1 gap-6'
-            }`}
-          >
+          <div className={`grid ${
+            viewMode === 'grid' 
+              ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 auto-rows-min' 
+              : 'grid-cols-1 gap-6'
+          }`}>
             {galleryImages.map((image, index) => (
               <motion.div
                 key={image.id}
+                ref={el => imageRefs.current[index] = el}
+                data-index={index}
                 variants={itemVariants}
+                initial="hidden"
+                animate={visibleItems.includes(index) ? "visible" : "hidden"}
                 whileHover={{ 
-                  scale: 1.03, 
-                  y: -4,
-                  transition: { duration: 0.2 }
+                  scale: 1.04, 
+                  y: -6,
+                  transition: { duration: 0.3 }
                 }}
                 whileTap={{ scale: 0.97 }}
                 className={`relative group cursor-pointer overflow-hidden rounded-2xl shadow-lg bg-white border border-white/50 ${
@@ -284,33 +305,50 @@ const Gallery = () => {
                 <div className={`relative overflow-hidden ${
                   viewMode === 'grid' ? getMobileHeight(image.size) : 'h-72 sm:h-96'
                 }`}>
-                  <img
+                  {/* Image with zoom-in from small */}
+                  <motion.img
                     src={image.url}
                     alt={image.title}
                     loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                    custom={loadedImages[image.id]}
+                    variants={imageFadeVariants}
+                    initial="hidden"
+                    animate="visible"
+                    onLoad={() => handleImageLoad(image.id)}
                   />
+                  
+                  {/* White overlay that fades out */}
+                  <motion.div 
+                    className="absolute inset-0 bg-white"
+                    custom={loadedImages[image.id]}
+                    variants={whiteOverlayVariants}
+                    initial="hidden"
+                    animate="visible"
+                  />
+
+                  {/* Zoom indicator */}
+                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="bg-black/50 backdrop-blur-sm rounded-full p-2">
+                      <ZoomIn className="w-4 h-4 text-white" />
+                    </div>
+                  </div>
 
                   {/* Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-center">
-                    <motion.div
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      whileInView={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: 0.1 }}
-                      className="flex flex-col items-center"
-                    >
+                    <div className="flex flex-col items-center">
                       <ZoomIn className="w-8 h-8 text-white mb-3 drop-shadow-lg" />
                       {image.title && (
                         <p className="text-white text-sm sm:text-base font-light tracking-wide px-4 text-center drop-shadow-lg">
                           {image.title}
                         </p>
                       )}
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
 
         {/* Footer */}
@@ -318,34 +356,19 @@ const Gallery = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.3 }}
           className="text-center mt-14 text-zinc-400 text-sm flex items-center justify-center gap-4"
         >
           <motion.div
-            animate={{ 
-              scale: [1, 1.2, 1],
-              rotate: [0, 10, -10, 0],
-            }}
-            transition={{ 
-              duration: 2,
-              repeat: Infinity,
-              repeatType: "loop",
-              ease: "easeInOut",
-            }}
+            animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }}
+            transition={{ duration: 2, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
           >
             <Sparkles className="w-4 h-4" />
           </motion.div>
           {galleryImages.length} Timeless Memories
           <motion.div
-            animate={{ 
-              scale: [1, 1.2, 1],
-              rotate: [0, -10, 10, 0],
-            }}
-            transition={{ 
-              duration: 2,
-              repeat: Infinity,
-              repeatType: "loop",
-              ease: "easeInOut",
-            }}
+            animate={{ scale: [1, 1.2, 1], rotate: [0, -10, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
           >
             <Sparkles className="w-4 h-4" />
           </motion.div>
@@ -362,7 +385,6 @@ const Gallery = () => {
             className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
             onClick={closeLightbox}
           >
-            {/* Close Button */}
             <motion.button
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -373,7 +395,6 @@ const Gallery = () => {
               <X className="w-6 h-6 text-white" />
             </motion.button>
 
-            {/* Download Button */}
             <motion.button
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -386,7 +407,6 @@ const Gallery = () => {
               <Download className="w-6 h-6 text-white" />
             </motion.button>
 
-            {/* Navigation Buttons */}
             <motion.button
               initial={{ x: -30, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -407,7 +427,6 @@ const Gallery = () => {
               <ChevronRight className="w-7 h-7 text-white" />
             </motion.button>
 
-            {/* Image */}
             <motion.div
               variants={lightboxVariants}
               initial="hidden"
@@ -420,12 +439,21 @@ const Gallery = () => {
                 src={selectedImage.url}
                 alt={selectedImage.title}
                 className="max-w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1.2, ease: "easeOut" }}
+              />
+              <motion.div 
+                className="absolute inset-0 bg-white rounded-2xl"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 0 }}
+                transition={{ duration: 1.2, ease: "easeOut" }}
               />
               {selectedImage.title && (
                 <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.2 }}
+                  transition={{ delay: 0.3 }}
                   className="absolute -bottom-14 left-1/2 -translate-x-1/2 bg-white/95 text-zinc-800 px-8 py-3 rounded-2xl text-center shadow-lg text-lg font-light whitespace-nowrap"
                 >
                   {selectedImage.title}
@@ -434,7 +462,7 @@ const Gallery = () => {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.1 }}
+                transition={{ delay: 0.2 }}
                 className="absolute top-4 left-4 text-white/50 text-sm font-light bg-black/30 px-4 py-2 rounded-full"
               >
                 {currentIndex + 1} / {galleryImages.length}
