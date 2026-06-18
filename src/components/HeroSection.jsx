@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Calendar, Clock, Gift, X, User, Mail } from 'lucide-react';
-import HeroImage from '../assets/sample_hero_img.png';
+import HeroImage from '../assets/hero_img.jpg';
 import PaystackPop from '@paystack/inline-js';
 
 const HeroSection = () => {
@@ -153,7 +153,7 @@ const HeroSection = () => {
             className="absolute inset-0"
             initial={{ scale: 1.1 }}
             animate={{ 
-              scale: [1.1, 1.2, 1.05, 1.15, 1.1],
+              scale: [0.8, 1.2, 1.05, 1.15, 1.1],
             }}
             transition={{
               duration: 8,
@@ -166,7 +166,7 @@ const HeroSection = () => {
             <img
               src={HeroImage}
               alt="Selorm & Ewurah Abena"
-              className="w-full h-full object-cover"
+              className="w-full h-full md:object-contain object-cover"
             />
           </motion.div>
           

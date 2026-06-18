@@ -88,7 +88,7 @@ const Home = () => {
       {/* ====== MOBILE HAMBURGER BUTTON ====== */}
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className="md:hidden fixed top-4 right-4 z-50 p-2.5 rounded-full bg-mauve-600 backdrop-blur-md shadow-lg border border-teal-600/30 text-white hover:bg-mauve-600 transition-colors duration-200"
+        className="md:hidden fixed top-4 right-4 z-50 p-2.5 rounded-full  shadow-lg  text-teal-600 hover:bg-mauve-600 transition-colors duration-200"
       >
         {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
       </button>

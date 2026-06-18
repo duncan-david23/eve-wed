@@ -10,6 +10,8 @@ import {
   Gift,
   Flower2
 } from 'lucide-react';
+import groom_image from '../assets/groom_img.jpg';
+import bride_image from '../assets/bride_img.jpg';
 
 // Hook: fires once when the ref element enters the viewport
 function useInView(options = {}) {
@@ -75,7 +77,7 @@ function FadeUp({ children, delay = 0, className = '' }) {
 const brideStory = {
   name: "Ewurah",
   title: "The Bride",
-  emoji: "👰",
+  image: bride_image,
   story: [
     { year: "2020", icon: Coffee, text: "It all started with a coffee date that changed everything. I was immediately drawn to his warmth, his laughter, and the way his eyes lit up when he talked about his dreams." },
     { year: "2021", icon: Sun,    text: "Through the ups and downs of life, we grew together. Every sunrise reminded me that I had found my sunshine in him. Our love deepened with each passing day." },
@@ -88,7 +90,7 @@ const brideStory = {
 const groomStory = {
   name: "Selorm",
   title: "The Groom",
-  emoji: "🤵",
+  image: groom_image,
   story: [
     { year: "2020", icon: Coffee, text: "That first coffee date was unforgettable. I saw something special in her — a spark, a warmth, a beauty that went far beyond what my eyes could see." },
     { year: "2021", icon: Moon,   text: "She became my peace, my anchor. Through every storm, her love was the calm I needed. I knew I had found someone truly extraordinary." },
@@ -178,8 +180,12 @@ function StoryCard({ storyData, isBride, delay = 0 }) {
       {/* Header */}
       <div className="p-8 md:p-10">
         <div className="flex flex-col sm:flex-row items-center gap-5 mb-8">
-          <div className="w-20 h-20 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-4xl flex-shrink-0">
-            {storyData.emoji}
+          <div className="w-20 h-20 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center flex-shrink-0 overflow-hidden">
+            <img 
+              src={storyData.image} 
+              alt={storyData.name}
+              className="w-full h-full object-cover"
+            />
           </div>
           <div className="text-center sm:text-left">
             <h3 className="text-3xl sm:text-4xl font-light text-white">{storyData.name}</h3>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Clock, Calendar, ChevronRight, Sparkles } from 'lucide-react';
-import Img2 from '../assets/sample_img.png';
+import Img2 from '../assets/countdown_img.jpg';
 
 const CountdownSection = () => {
   const [timeLeft, setTimeLeft] = useState({
