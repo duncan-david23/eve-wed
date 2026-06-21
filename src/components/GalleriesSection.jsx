@@ -10,6 +10,7 @@ import {
   ZoomIn 
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { featured_images } from '../data/images';
 
 const GalleriesSection = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -17,20 +18,7 @@ const GalleriesSection = () => {
   const [loadedImages, setLoadedImages] = useState({});
   const navigate = useNavigate();
 
-  const galleryImages = [
-    { id: 1, url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=1200&fit=crop" },
-    { id: 2, url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&h=800&fit=crop" },
-    { id: 3, url: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&h=1000&fit=crop" },
-    { id: 4, url: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&h=600&fit=crop" },
-    { id: 5, url: "https://images.unsplash.com/photo-1511795409674-a3212fa0ad27?w=800&h=1000&fit=crop" },
-    { id: 6, url: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&h=800&fit=crop" },
-    { id: 7, url: "https://images.unsplash.com/photo-1475499112825-d6f2f3c2bd89?w=800&h=1200&fit=crop" },
-    { id: 8, url: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&h=600&fit=crop" },
-    { id: 9, url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=1000&fit=crop" },
-    { id: 10, url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&h=1200&fit=crop" },
-    { id: 11, url: "https://images.unsplash.com/photo-1511795409674-a3212fa0ad27?w=800&h=800&fit=crop" },
-    { id: 12, url: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&h=1000&fit=crop" }
-  ];
+  const galleryImages = featured_images;
 
   const handleImageLoad = (id) => {
     setLoadedImages(prev => ({ ...prev, [id]: true }));
@@ -206,7 +194,7 @@ const GalleriesSection = () => {
                 <div className="relative overflow-hidden bg-white">
                   {/* Image with zoom-in from small */}
                   <motion.img
-                    src={image.url}
+                    src={image.img}
                     alt={`Wedding moment ${image.id}`}
                     loading="lazy"
                     className="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-110"
@@ -299,7 +287,7 @@ const GalleriesSection = () => {
             >
               <div className="relative bg-white rounded-2xl overflow-hidden shadow-2xl">
                 <motion.img
-                  src={selectedImage.url}
+                  src={selectedImage.img}
                   alt="Wedding moment"
                   className="max-w-full max-h-[88vh] object-contain rounded-2xl"
                   initial={{ opacity: 0, scale: 0.8 }}

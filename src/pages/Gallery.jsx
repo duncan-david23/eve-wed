@@ -12,6 +12,7 @@ import {
   Grid,
   List
 } from 'lucide-react';
+import { g_images } from '../data/images';
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -21,24 +22,7 @@ const Gallery = () => {
   const [loadedImages, setLoadedImages] = useState({});
   const [visibleItems, setVisibleItems] = useState([]);
 
-  const galleryImages = [
-    { id: 1, url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=1200&fit=crop", size: "large", title: "The Vows" },
-    { id: 2, url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&h=800&fit=crop", size: "square", title: "First Look" },
-    { id: 3, url: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&h=1000&fit=crop", size: "portrait", title: "The Rings" },
-    { id: 4, url: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&h=600&fit=crop", size: "wide", title: "Wedding Decor" },
-    { id: 5, url: "https://images.unsplash.com/photo-1511795409674-a3212fa0ad27?w=800&h=1000&fit=crop", size: "portrait", title: "Bridal Portrait" },
-    { id: 6, url: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&h=800&fit=crop", size: "square", title: "Together" },
-    { id: 7, url: "https://images.unsplash.com/photo-1475499112825-d6f2f3c2bd89?w=800&h=1200&fit=crop", size: "tall", title: "Groom Portrait" },
-    { id: 8, url: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&h=600&fit=crop", size: "wide", title: "Wedding Details" },
-    { id: 9, url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=1000&fit=crop", size: "portrait", title: "The Altar" },
-    { id: 10, url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&h=1200&fit=crop", size: "tall", title: "Bridal Details" },
-    { id: 11, url: "https://images.unsplash.com/photo-1511795409674-a3212fa0ad27?w=800&h=800&fit=crop", size: "square", title: "Happiness" },
-    { id: 12, url: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&h=1000&fit=crop", size: "portrait", title: "Flower Arrangements" },
-    { id: 13, url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=800&fit=crop", size: "square", title: "The Celebration" },
-    { id: 14, url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&h=600&fit=crop", size: "wide", title: "Venue" },
-    { id: 15, url: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&h=1200&fit=crop", size: "tall", title: "The Dress" },
-  ];
-
+  const galleryImages = g_images
   const imageRefs = useRef([]);
 
   useEffect(() => {
