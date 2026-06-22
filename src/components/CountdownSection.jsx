@@ -126,6 +126,9 @@ const CountdownSection = () => {
           <p className="text-3xl sm:text-4xl md:text-5xl font-light text-teal-900 tracking-tight">
             Our forever begins
           </p>
+          {/* <p className="  text-mauve-500 font-bold tracking-tight mt-3.5 italic">
+            CHRISTIAN SELORM DZIKUNU <span className="text-teal-600"> <br /> &amp; </span> <br className="hidden sm:block" /> <span className="text-teal-600 font-bold italic">EVELYN ABENA KRAMPAH</span> 
+          </p> */}
         </motion.div>
 
         {/* Main Card */}

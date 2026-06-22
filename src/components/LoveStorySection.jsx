@@ -75,7 +75,7 @@ function FadeUp({ children, delay = 0, className = '' }) {
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const brideStory = {
-  name: "Ewurah",
+  name: "EVELYN ABENA KRAMPAH",
   title: "The Bride",
   image: bride_image,
   story: [
@@ -88,7 +88,7 @@ const brideStory = {
 };
 
 const groomStory = {
-  name: "Selorm",
+  name: "CHRISTIAN SELORM DZIKUNU",
   title: "The Groom",
   image: groom_image,
   story: [
@@ -188,7 +188,7 @@ function StoryCard({ storyData, isBride, delay = 0 }) {
             />
           </div>
           <div className="text-center sm:text-left">
-            <h3 className="text-3xl sm:text-4xl font-light text-white">{storyData.name}</h3>
+            <h3 className=" font-light text-white">{storyData.name}</h3>
             <p className={`${subColor} text-base font-light`}>{storyData.title}</p>
           </div>
         </div>
