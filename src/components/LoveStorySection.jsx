@@ -164,8 +164,8 @@ function TimelineItem({ item, index, cardInView }) {
 
 function StoryCard({ storyData, isBride, delay = 0 }) {
   const [cardRef, cardInView] = useInView();
-  const cardBg   = isBride ? 'bg-teal-600'   : 'bg-purple-600';
-  const subColor = isBride ? 'text-teal-200'  : 'text-purple-200';
+  const cardBg   = isBride ? 'bg-teal-600'   : 'bg-mauve-600';
+  const subColor = isBride ? 'text-teal-200'  : 'text-white/70';
 
   return (
     <div
@@ -243,7 +243,7 @@ const LoveStorySection = () => {
               <div className="h-px w-12 bg-amber-400" />
               <div className="flex items-center gap-2">
                 <Heart className="w-5 h-5 text-teal-500 fill-teal-500" />
-                <Flower2 className="w-5 h-5 text-purple-500" />
+                <Flower2 className="w-5 h-5 text-mauve-600" />
                 <Heart className="w-5 h-5 text-teal-500 fill-teal-500" />
               </div>
               <div className="h-px w-12 bg-amber-400" />
@@ -325,7 +325,7 @@ const LoveStorySection = () => {
             <div className="w-12 h-px bg-teal-400" />
             <div className="flex items-center gap-1.5">
               <div className="w-2 h-2 rounded-full bg-teal-500" />
-              <div className="w-2 h-2 rounded-full bg-purple-500" />
+              <div className="w-2 h-2 rounded-full bg-mauve-500" />
               <div className="w-2 h-2 rounded-full bg-amber-500" />
             </div>
             <div className="w-12 h-px bg-amber-400" />
