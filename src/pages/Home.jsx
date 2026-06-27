@@ -208,7 +208,7 @@ const Home = () => {
                     <div className="bg-gradient-to-r from-teal-50/50 to-mauve-50/50 rounded-xl p-4 border border-teal-100/50">
                       <p className="text-gray-700 text-sm leading-relaxed">
                         <span className="font-medium text-mauve-600">Save the date:</span>
-                        {' '}We can't wait to celebrate our Traditional Ceremony with you on{' '}
+                        {' '}We can't wait to celebrate our Traditional Marriage with you on{' '}
                         <span className="font-semibold text-teal-600">September 4th, 2026</span>.
                         Please remember to RSVP by <span className="font-semibold text-amber-600">September 1st, 2026</span>.
                       </p>

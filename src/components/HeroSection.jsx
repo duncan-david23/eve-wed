@@ -212,7 +212,7 @@ const HeroSection = () => {
               <motion.div variants={itemVariants} className="relative mt-6">
                 <div className="absolute left-1/2 transform -translate-x-1/2 -top-3 w-12 h-px bg-amber-400/40" />
                 <p className="text-white/70 text-[10px] uppercase tracking-[0.3em] font-light">
-                  invite you to their wedding celebration
+                  invite you to their traditional marriage ceremony
                 </p>
                 <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-3 w-12 h-px bg-amber-400/40" />
               </motion.div>
