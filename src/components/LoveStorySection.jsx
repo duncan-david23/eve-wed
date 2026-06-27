@@ -8,7 +8,13 @@ import {
   Star,
   Camera,
   Gift,
-  Flower2
+  Flower2,
+  CloudRain,
+  Phone,
+  GraduationCap,
+  Briefcase,
+  Sparkles,
+  Home
 } from 'lucide-react';
 import groom_image from '../assets/groom_img.jpg';
 import bride_image from '../assets/bride_img.jpg';
@@ -79,10 +85,46 @@ const brideStory = {
   title: "The Bride",
   image: bride_image,
   story: [
-    { year: "2020", icon: Coffee, text: "It all started with a coffee date that changed everything. I was immediately drawn to his warmth, his laughter, and the way his eyes lit up when he talked about his dreams." },
-    { year: "2021", icon: Sun,    text: "Through the ups and downs of life, we grew together. Every sunrise reminded me that I had found my sunshine in him. Our love deepened with each passing day." },
-    { year: "2022", icon: Heart,  text: "He asked me to be his forever under the stars. In that magical moment, I knew I had found my home. My heart said yes before I could even speak the words." },
-    { year: "2023", icon: Star,   text: "Planning our future together has been the greatest adventure. From choosing colors to dreaming about our forever, every step has been filled with love and excitement." },
+    { 
+      year: "2019", 
+      icon: CloudRain, 
+      text: "It all started on a rainy night when he braved the weather to bring me a printed assignment. I was stressed and didn't know how I'd get it done, but within twenty minutes, he arrived at my hostel. That simple act of kindness touched my heart deeply and became the first spark of something special." 
+    },
+    { 
+      year: "2020", 
+      icon: Phone, 
+      text: "Though the COVID-19 pandemic separated us physically, he traveled all the way to Accra to surprise me. One evening, he casually asked me to step outside, and there he was. We spent the evening talking, laughing, and creating beautiful memories. He even organized a beach photoshoot for my birthday." 
+    },
+    { 
+      year: "2021", 
+      icon: GraduationCap, 
+      text: "My final-year project came with emotional and financial challenges, but he stood by me every step of the way. Whether it was helping me get to class, the laboratory, or safely back to the hostel on his motorbike, he constantly showed up for me. His support strengthened our bond and reassured me I had found someone truly special." 
+    },
+    { 
+      year: "2022", 
+      icon: Home, 
+      text: "After graduation, I moved back to Accra, and our relationship flourished. Living closer allowed us to spend more time together, communicate daily, and share our dreams. We became each other's source of encouragement—whether celebrating victories or navigating challenges, we always found strength in one another." 
+    },
+    { 
+      year: "2023", 
+      icon: Briefcase, 
+      text: "He pursued his master's degree while I completed my national service and later secured a permanent role in my workplace. Through academics, career decisions, family matters, and financial responsibilities, we continued to support and encourage one another. Our partnership grew stronger as we learned to face life's challenges as a team." 
+    },
+    { 
+      year: "2024", 
+      icon: Sparkles, 
+      text: "Through every high and low, our love continued to grow. Each day reminded us of the blessing we had found in one another—a relationship built on faith, friendship, understanding, and unconditional support. We became more certain than ever that God was writing our story." 
+    },
+    { 
+      year: "2025", 
+      icon: Gift, 
+      text: "After successfully completing his master's degree, he took the next beautiful step. He officially asked for my hand in marriage and expressed his desire to spend forever with me. Soon after, our families met, and what started as a simple friendship became a joyful union of two families." 
+    },
+    { 
+      year: "2026", 
+      icon: Heart, 
+      text: "Today, we stand at the beginning of a new chapter. Our journey is a testament to the power of patience, faith, love, and communication. We believe that when God is at the center of a relationship, everything unfolds according to His perfect plan. What began with a simple act of kindness on a rainy night has become a lifelong promise of love." 
+    },
   ],
   quote: "From the moment I met him, I knew he was the one my soul had been searching for.",
 };
@@ -92,19 +134,59 @@ const groomStory = {
   title: "The Groom",
   image: groom_image,
   story: [
-    { year: "2020", icon: Coffee, text: "That first coffee date was unforgettable. I saw something special in her — a spark, a warmth, a beauty that went far beyond what my eyes could see." },
-    { year: "2021", icon: Moon,   text: "She became my peace, my anchor. Through every storm, her love was the calm I needed. I knew I had found someone truly extraordinary." },
-    { year: "2022", icon: Gift,   text: "Getting down on one knee was the easiest decision I've ever made. Seeing her eyes fill with tears of joy, I knew I had just made the best promise of my life." },
-    { year: "2023", icon: Camera, text: "Every moment with her is a memory I want to capture forever. From wedding planning to building our dreams, I can't wait to start our forever together." },
+    { 
+      year: "2019", 
+      icon: Coffee, 
+      text: "Our story began at the University for Development Studies, Tamale. A casual visit to Ewura's end with a friend became something far more meaningful. I was immediately drawn to her warmth and charm. I later found an excuse to visit her hostel under the pretense of distributing photography coupons—though my real intention was to see her again." 
+    },
+    { 
+      year: "2020", 
+      icon: CloudRain, 
+      text: "That rainy evening when I helped her print an assignment became a defining moment. It was a small act of kindness, but it strengthened the trust and care we had begun to build. By June, I expressed my intentions and asked if we could take our friendship to the next level. To my joy, she agreed." 
+    },
+    { 
+      year: "2021", 
+      icon: Camera, 
+      text: "After graduating and completing my national service, I moved to Accra to pursue corporate opportunities while building my photography and videography business. Though distance challenged us, I frequently traveled to Tamale to spend time with her. We made the most of our time together—beach photoshoots, quality moments, and becoming part of each other's families." 
+    },
+    { 
+      year: "2022", 
+      icon: GraduationCap, 
+      text: "This was a demanding year as Ewura was in her final year, immersed in her project work. I supported her in every way—emotionally, financially, and practically. I frequently traveled to Tamale just to be there for her, used my motorbike to help her move around for project activities, and guided her through technical aspects of her work until she successfully completed it." 
+    },
+    { 
+      year: "2023", 
+      icon: Briefcase, 
+      text: "After Ewura completed her studies and returned to Accra, she began her national service while I focused on building my career as a freelance photographer and enrolled in my MBA. Starting a creative business in a competitive city came with challenges, but she never stopped believing in me. She became my greatest supporter and partner in every sense." 
+    },
+    { 
+      year: "2024", 
+      icon: Sparkles, 
+      text: "I continued pursuing my MBA while growing my photography brand. Ewura transitioned into the job market, and I encouraged her through the process of job hunting. Together we navigated this new stage of life, building our individual paths while still supporting each other. This year represented growth, resilience, and progress for both of us." 
+    },
+    { 
+      year: "2025", 
+      icon: Gift, 
+      text: "After completing my master's degree, I knew without a doubt that Ewura was the woman I wanted to spend the rest of my life with. She had been my best friend, my confidant, my greatest cheerleader, and my source of strength. With joy and gratitude, I met her family, and we shared our desire to unite our lives in marriage." 
+    },
+    { 
+      year: "2026", 
+      icon: Heart, 
+      text: "Today, we stand here ready to begin a new chapter—two hearts, one journey, and a lifetime of love ahead of us. Our families welcomed our decision with love and blessings. What began as a simple friendship on campus has blossomed into the love story that has brought us to this joyful celebration." 
+    },
   ],
   quote: "She is my greatest blessing, my best friend, and the love of my life. Forever with her is not long enough.",
 };
 
 const YEAR_COLORS = {
+  "2019": "bg-amber-500",
   "2020": "bg-teal-500",
-  "2021": "bg-amber-500",
-  "2022": "bg-purple-500",
-  "2023": "bg-teal-500",
+  "2021": "bg-purple-500",
+  "2022": "bg-rose-500",
+  "2023": "bg-indigo-500",
+  "2024": "bg-emerald-500",
+  "2025": "bg-pink-500",
+  "2026": "bg-teal-500",
 };
 
 // ─── Timeline item with per-item in-view trigger ──────────────────────────────
@@ -115,7 +197,7 @@ function TimelineItem({ item, index, cardInView }) {
   useEffect(() => {
     if (!cardInView) return;
     // Stagger each item after the card itself is visible
-    const t = setTimeout(() => setVisible(true), 400 + index * 200);
+    const t = setTimeout(() => setVisible(true), 400 + index * 150);
     return () => clearTimeout(t);
   }, [cardInView, index]);
 
@@ -188,7 +270,7 @@ function StoryCard({ storyData, isBride, delay = 0 }) {
             />
           </div>
           <div className="text-center sm:text-left">
-            <h3 className=" font-light text-white">{storyData.name}</h3>
+            <h3 className="font-light text-white">{storyData.name}</h3>
             <p className={`${subColor} text-base font-light`}>{storyData.title}</p>
           </div>
         </div>

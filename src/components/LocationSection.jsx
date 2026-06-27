@@ -166,7 +166,7 @@ const LocationSection = () => {
                   </div>
                   <div className="flex gap-4 text-zinc-600">
                     <Gift className="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-[15px]">Gift registry available upon request</span>
+                    <span className="text-[15px]">Gift registry available</span>
                   </div>
                 </div>
               </motion.div>

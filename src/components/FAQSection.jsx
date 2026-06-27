@@ -59,12 +59,12 @@ const FAQSection = () => {
       answer: "Yes! We will be serving a delicious meal followed by refreshments. Please let us know of any dietary restrictions when you RSVP.",
       icon: Music
     },
-    {
-      id: 8,
-      question: "Where can I find gift registry information?",
-      answer: "Your presence is the greatest gift, but if you wish to bless us, you can click the 'Bless the Couple' button at the top right corner of the page to make a contribution to our future together.",
-      icon: Gift
-    }
+   {
+  id: 8,
+  question: "Where can I find gift registry information?",
+  answer: "Your presence is the greatest gift to us. However, kindly click the 'Bless the Couple' button to bless the couple. The button is fixed at the bottom center of the screen and remains visible as you scroll through the page.",
+  icon: Gift
+}
   ];
 
   const toggleFAQ = (index) => {
