@@ -11,7 +11,7 @@ import LoveStorySection from '../components/LoveStorySection'
 import Timeline from '../components/Timeline'
 import PaystackPop from '@paystack/inline-js';
 
-const paystackPublicKey = 'pk_test_977623941fe552b3416bc945370b1b21240f26de';
+const paystackPublicKey = 'pk_live_60ff6874b9271950050171789f83d2cffd2bae43';
 
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
